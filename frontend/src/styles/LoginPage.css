@@ -1,0 +1,49 @@
+html, body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background:
+            linear-gradient(135deg, #1f1c2c, #928dab);
+}
+.loginPage{
+    display:flex;
+    flex-direction: row;
+}
+
+#blob-svg{
+    display:inline-block;
+    box-sizing: border-box;
+    min-width: 60vw;
+    min-height: 60vh;
+}
+.landingText{
+    margin-top: 200px;
+    margin-right:50px;
+    max-height: 60vh;
+    display:grid;
+    grid-template-rows: 3fr 2fr 1fr 1fr;
+}
+.landingText h1{
+    margin-bottom:0;
+    font-weight: normal;
+    font-size:4em;
+}
+.landingText h1 span{
+    font-weight: bolder;
+}
+.landingText p{
+    margin-top: 0;
+    font-size:1.5em;
+}
+.buttonsDiv{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.Btn  {
+    min-height:50px ;
+    margin-bottom:20px;
+}
