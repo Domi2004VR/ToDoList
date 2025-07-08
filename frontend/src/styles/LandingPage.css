@@ -5,8 +5,8 @@ html, body {
     min-height: 100%;
     width: 100%;
     overflow: hidden;
-    background:
-            linear-gradient(135deg, #1f1c2c, #928dab);
+    background: linear-gradient(120deg, #e4d8fa 0%, #b5f0ff 100%);
+
 }
 .loginPage{
     display:flex;

@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
-import blob from '../assets/blob.svg'
-import '../styles/LoginPage.css'
-function LoginPage() {
+import blob from '../assets/blobLanding.svg'
+import '../styles/LandingPage.css'
+function LandingPage() {
     return (
         <div className="loginPage">
             <div className="blob">
@@ -19,4 +19,4 @@ function LoginPage() {
     )
 }
 
-export default LoginPage;
+export default LandingPage;
