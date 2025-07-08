@@ -38,6 +38,7 @@
     ]
   },
   "devDependencies": {
-    "react-bootstrap": "^2.10.10"
+    "react-bootstrap": "^2.10.10",
+    "react-router-dom": "^7.6.3"
   }
 }
