@@ -16,8 +16,7 @@ function RegisterPage() {
         password:"",
         password2:""
     });   //creo stato e setter per la risposta
-    const [error, setError] = useState(null);           //creo stato e setter per un eventuale errore
-    const [status, setStatus] = useState("typing"); // creo stato e setter per lo satus del form
+    const [error, setError] = useState(null);           //creo stato e setter per un eventuale errorem
 
 
     function handleChange(e){
@@ -26,7 +25,6 @@ function RegisterPage() {
     async function handleSubmit(e) {
       e.preventDefault();  //Evito il comportamento predefinito del form
 
-      setStatus("submitting"); //Aggiorno lo stato a submitting
       fetch('http://localhost:3001/auth/register', {
           method : 'POST' ,
           headers: {
@@ -51,14 +49,13 @@ function RegisterPage() {
           .then((data)=>{  //Se tutto è andato a buon fine prendo il valore di res.json e lo memorizzo in data per poi elaborarlo
               setError(null);           //non ho errori
               console.log("Registrazione avvenuta con successo", data);
-              setStatus("sent");   //imposto lo stato su inviato
+              localStorage.setItem("jwt", data.accessToken);
               navigate("/dashboard");   //Reindirizzo su dashboard
           })
           .catch((err)=>{
               //Si entra in questo catch se la risposta del server è negativa e si entra in Throw new error
               setError(err.message);   //Imposto l'errore e poi tramite il componente ErrorMessage lo mostro
               console.error("Errore:", err.message);
-              setStatus("tying");  //imposto lo stato nuvamente su typing
           });
         }
 
@@ -70,25 +67,25 @@ function RegisterPage() {
             <div className="formDiv">
                 <div className="InputDiv">
                     <h1>Inizia subito la tua registrazione!</h1>
-                    <form onSubmit={handleSubmit}>   //Quando viene schiacciato il bottone invia la risposta al backend tramite la funzione handleSubmit
+                    <form  onSubmit={handleSubmit}>   {/*Quando viene schiacciato il bottone invia la risposta al backend tramite la funzione handleSubmit*/}
                         <FloatingLabel controlId="floatingName" label="Nome" name="nome" className="mb-3">
-                            <Form.Control  type="text" placeholder="Nome" name="nome"  value={RegisterForm.nome} onChange={handleChange}   /> /*Aggiorno il valore del nome in tempo reale dentro lo stato RegisterForm tramite handleChange
+                            <Form.Control  type="text" placeholder="Nome" name="nome"  value={RegisterForm.nome} onChange={handleChange}   />  {/*Aggiorno il valore del nome in tempo reale dentro lo stato RegisterForm tramite handleChange*/}
                         </FloatingLabel>
                         <FloatingLabel controlId="floatingSurname" label="Cognome"  className="mb-3">
-                        <Form.Control type="text" placeholder="Cognome" name="cognome" value={RegisterForm.cognome} onChange={handleChange} /> //Aggiorno il valore del cognome in tempo reale dentro lo stato RegisterForm tramite handleChange
+                        <Form.Control type="text" placeholder="Cognome" name="cognome" value={RegisterForm.cognome} onChange={handleChange} /> {/*Aggiorno il valore del cognome in tempo reale dentro lo stato RegisterForm tramite handleChange*/}
                         </FloatingLabel>
                         <FloatingLabel controlId="floatingEmail" label="Email"  className="mb-3">
-                            <Form.Control type="email" placeholder="email" name="email" value={RegisterForm.email} onChange={handleChange}/>  //Aggiorno il valore dell'email in tempo reale dentro lo stato RegisterForm tramite handleChange
+                            <Form.Control type="email" placeholder="email" name="email" value={RegisterForm.email} onChange={handleChange}/>  {/*Aggiorno il valore del email in tempo reale dentro lo stato RegisterForm tramite handleChange*/}
                         </FloatingLabel>
                         <FloatingLabel controlId="floatingPassword" label="Password"  className="mb-3">
-                            <Form.Control type="password" placeholder="Password" name="password" value={RegisterForm.password} onChange={handleChange}/> //Aggiorno il valore della password in tempo reale  dentro lo stato RegisterForm tramite handleChange
+                            <Form.Control type="password" placeholder="Password" name="password" value={RegisterForm.password} onChange={handleChange}/> {/*Aggiorno il valore della password in tempo reale dentro lo stato RegisterForm tramite handleChange*/}
                         </FloatingLabel>
                         <FloatingLabel controlId="floatingPassword" label="Ripeti password"  className="mb-3">
-                            <Form.Control type="password" placeholder="Ripeti password" name="password2" value={RegisterForm.password2} onChange={handleChange} />   //Aggiorno il valore della password2 in tempo reale dentro lo stato RegisterForm tramite handleChange
+                            <Form.Control type="password" placeholder="Ripeti password" name="password2" value={RegisterForm.password2} onChange={handleChange} />   {/*Aggiorno il valore della password 2 in tempo reale dentro lo stato RegisterForm tramite handleChange*/}
                         </FloatingLabel>
 
-                        <Button variant="outline-primary" className="button">Registrati!</Button>
-                        <ErrorMessage message={error} />     //Componente per mostrare un errore
+                        <Button type="submit" variant="outline-primary"  className="button">Registrati!</Button>
+                        <ErrorMessage message={error} />      {/*Componente per mostrare un errore*/}
                     </form>
                 </div>
             </div>

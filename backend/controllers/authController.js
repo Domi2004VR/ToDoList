@@ -3,6 +3,7 @@ const bcrypt = require ('bcrypt')
 const User = require ('../models/userModel');
 const RefreshToken = require('../models/refreshTokenModel');
 
+
 const createToken = (user) => {
     const accessToken = jwt.sign({
         id: user._id,
@@ -12,6 +13,53 @@ const createToken = (user) => {
     }, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '7d'})
 
     return {accessToken, refreshToken}
+}
+exports.registerUser = (req, res) => {
+    const { nome, cognome, email, password, password2 } = req.body
+
+    if (!nome || !cognome || !email || !password || !password2) {
+        return res.status(401).json({message: 'Tutti i campi sono obbligatori'})
+    }
+    if (password !== password2) {
+        return res.status(401).json({message: 'Le password non corrispondono'})
+    }
+    if (password.length < 8) {
+        return res.status(401).json({message: 'La password deve essere di almeno 8 caratteri'})
+    }
+
+    User.findOne({email:email})   //controlla se l'utente è registrato o meno
+        .then(userFind => {
+            if(userFind){return res.status(400).json({message: "l'utente è gia registrato, effettua il login!"})}
+            bcrypt.hash(password, 10)    //funzione che crea la password hashata
+                .then((hashedPassword) => {
+                    User.create({     //creo un nuovo documento nel database con il nuovo utente
+                        nome: nome,
+                        cognome: cognome,
+                        email: email,
+                        password: hashedPassword    //passo la pw hashata
+                    })
+                        .then((createdUser)=>{   //Se la registrazione va a buon fine creo un refresh token e access token restituendolo al frontend per memorizzarlo
+                            const {accessToken, refreshToken} = createToken(createdUser)
+                            RefreshToken.create({token: refreshToken, userId: createdUser._id})     //salvo il refresh token nel DB
+                                .then(() => {           //Creo il cookie da spedire
+                                    res.cookie('jwt', refreshToken, {
+                                        httpOnly: true,  //solo tramite http
+                                        sameSite: 'strict', // solo per richieste all'interno del sito (aiuta a prevenire CSRF)
+                                        secure: process.env.NODE_ENV === 'production', // Solo su HTTPS in produzione
+                                        maxAge: 1000*60*60*24*7 // 7 giorni in millisecondi
+                                    })
+                                    res.json({              //risposta che mando al frontend contente info e accessToken
+                                        message: 'Login effettuato con successo',
+                                        accessToken: accessToken,
+                                        id: createdUser._id,
+                                        email: createdUser.email,
+                                    })
+                                })
+
+                        })
+                })
+        })
+
 }
 
 exports.loginUser = (req, res) => {
@@ -31,7 +79,7 @@ exports.loginUser = (req, res) => {
         bcrypt.compare(password, userFind.password)
             .then(passwordFind => {
                 if (!passwordFind) {
-                    return res.status(401).json({ message: 'Password incorreta' })
+                    return res.status(401).json({ message: 'Password incorretta' })
                 }
 
                 const {accessToken, refreshToken} = createToken(userFind)
