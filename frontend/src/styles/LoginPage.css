@@ -67,6 +67,13 @@ a:hover{
     color: #5B9BD5;
 }
 
+/* parte aggiuntiva per l'errore a cui diamo lo stile diverso per ogni pagina, in maniera da lasciarci delle libertà*/
+p#error-message{
+    color:red;
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 0;
+}
 
 
 
