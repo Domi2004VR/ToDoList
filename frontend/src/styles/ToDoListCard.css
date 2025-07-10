@@ -1,0 +1,41 @@
+body{
+    font-family: 'Parastoo';
+}
+
+.cardContainer{
+    display: inline-flex;
+    flex-direction: column;
+    min-width: 200px;
+    min-height: 200px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 8px rgba(34,34,56,0.13);
+    background-color: #FFFFFF;
+;
+
+
+}
+.buttonsDiv{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#openButton{
+    padding: 5px 10px;
+}
+i{
+    font-size: 1.7em;
+}
+
+i:hover{
+    cursor: pointer;
+    color:red;
+    font-size: 1.9em;
+}
+
+#titleId{
+    font-weight: bold;
+}
