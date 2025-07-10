@@ -49,7 +49,7 @@ function LoginPage() {
                 navigate("/dashboard");
             })
             .catch(err => {
-                // Qui arrivi se è stato fatto `throw new Error(...)`
+                // Qui arrivi se è stato fatto `throw new Error(...)` e viene passato l'errore al catch (err)
                 setError(err.message); //  mostra l’errore all’utente
                 console.error("Errore:", err.message);
             });
