@@ -21,5 +21,5 @@
     background: #f5f6f7;
     flex-grow: 1;              /* Occupa tutto lo spazio rimanente */
     padding: 32px;
-    min-width: 0;         /* Utile per evitare overflow */
+    min-width: 0;
 }

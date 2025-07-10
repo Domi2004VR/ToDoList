@@ -1,12 +1,12 @@
 import SideBar from "./SideBar";
 import ToDoListCard from "./ToDoListCard";
 import Button from 'react-bootstrap/Button';
-import "../styles/myToDoLists.css";
+import "../styles/myToDoLists.module.css";
 
 function MyToDoLists() {
    return (
        <div className="myToDoListsContainer">
-           <div className={"SideBarContainer"}>
+           <div className="SideBarContainer">
                <SideBar nome="Diego"/>
            </div>
            <div className="RestantePagina">
