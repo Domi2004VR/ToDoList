@@ -1,10 +1,9 @@
 import Form from "react-bootstrap/Form";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
 import "bootstrap-icons/font/bootstrap-icons.css"
 import {useState} from "react";
 
 
-function ToDo ({isDisabled, setIsDisabled}) {
+function ToDo ({isDisabled, setIsDisabled, toDoes, setToDoes, done, setDone}) {
 
     const [input, setInput] = useState("");
 
@@ -19,27 +18,44 @@ function ToDo ({isDisabled, setIsDisabled}) {
         setIsDisabled(false)
     }
 
+    function handleComplete (e) {
+        setToDoes(toDoes.map((element)=>{
+            if(e.target.id === element.id){
+                return {...element, done: true}
+            }
+            return element;
+        }));
+    }
+
+    //funzione prova id
+    function handleId () {
+        return crypto.randomUUID();
+    }
+
+    const id = handleId()
+
     return (
         <div className="ToDoContainer">
-            <FloatingLabel controlId="floatingName" label="Inserisci il testo per creare il To Do" name="inputTextToDo" className="mb-3" disabled={isDisabled}>
-                <Form.Control  type="text" name="inputTextToDo"  value={input} onChange={handleInputChange}   />  {/*Aggiorno il valore del nome in tempo reale dentro lo stato RegisterForm tramite handleChange*/}
-            </FloatingLabel>
+            <div className="checkBoxToDoContainer">
+                <Form.Check id="checkBoxToDo" checked={toDoes.done} onChange={handleComplete} aria-label="option 1" />
+            </div>
+            <Form.Control key={id} className='textToDo' type="text" name="inputTextToDo" disabled={isDisabled} value={input} onChange={handleInputChange}/>
             {isDisabled? (
-                <div className="ToDoButtonsContainer">
-                    <button onClick={handleDisabledChange} id="editToDoButton">
-                        <i className="bi bi-pencil"></i>
+                <div className="toDoButtonsContainer">
+                    <button className="icon-button" onClick={handleDisabledChange} id="editToDoButton">
+                        <i className="iconsToDo bi bi-pencil"></i>
                     </button>
-                    <button id="deleteToDoButton">
-                        <i className="bi bi-trash"></i>
+                    <button className="icon-button" id="removeToDoButton">
+                        <i className="iconsToDo bi bi-trash"></i>
                     </button>
                 </div>
                 ) : (
-                    <div className="ToDoButtonsContainer">
-                        <button id="confirmEditToDoButton">
-                            <i className="bi bi-check-circle"></i>
+                    <div className="toDoButtonsContainer">
+                        <button className="icon-button" id="confirmEditToDoButton">
+                            <i className="iconsToDo bi bi-check-circle"></i>
                         </button>
-                        <button id="cancelEditToDoButton">
-                            <i className="bi bi-x-circle"></i>
+                        <button className="icon-button" id="cancelEditToDoButton">
+                            <i className="icon-button bi bi-x-circle"></i>
                         </button>
                     </div>
             )}

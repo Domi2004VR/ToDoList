@@ -46,6 +46,7 @@ function LoginPage() {
             .then(data => {
                 setError(null); // login ok, nessun errore
                 console.log("Login riuscito:", data);
+                localStorage.setItem('jwt', data.accessToken)
                 navigate("/dashboard");
             })
             .catch(err => {

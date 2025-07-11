@@ -6,6 +6,7 @@ import PopupWindow from "./components/PopupWindow";
 import {useState} from "react";
 import Home from "./components/Home";
 import MyToDoLists from "./components/MyToDoLists";
+import ToDoList from "./components/ToDoList";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/home" element={<Home openPopup={openPopup}  closePopup={closePopup} />} />
                 <Route path="/mytodolists" element={<MyToDoLists openPopup={openPopup}  closePopup={closePopup} />} />
+                <Route path="mytodo" element={<ToDoList openPopup={openPopup}  closePopup={closePopup} />} />
             </Routes>
             {popup.visible && (
                 <PopupWindow popupInfo={popup.data} />    /*Mostra una finestra con una richiesta con i dati passati dai figli memorizzati in popup.data*/

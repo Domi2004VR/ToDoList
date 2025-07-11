@@ -5,32 +5,51 @@ import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import {useState} from "react";
 import ToDo from './ToDo'
+import '../styles/ToDoList.css'
 
-function ToDoList({viewPopup}) {
-    const [toDoes, setToDoes] = useState([]);
+function ToDoList({openPopup, closePopup}) {
+    const [toDoes, setToDoes] = useState([{
+        id: "",
+        description: "",
+        done: false,
+    }]);
+    const [toDo, setToDo] = useState("")
+
+
     const [isDisabled, setIsDisabled] = useState(true);
+    const [inputText, setInputText] = useState("");
 
-
+ //   function handleInputSubmit(){
+  //      if toDo
+   //     setInputText("");
+    //}
 
     return (
-        <div className="ToDoListContainer">
-            {viewPopup === true ? <PopupWindow popupInfo={popupMyToDoList}/> : null}
-            <div className="SideBarContainer">
-                <SideBar nome="Diego"/>
+        <div className="toDoListContainerPage">
+            <div className="sideBarContainerToDoPage">
+                <SideBar nome="Lello" openPopup={openPopup} closePopup={closePopup}  />
             </div>
-            <div className="RestantePagina">
+            <div className="restantePaginaToDoPage">
                 <h1 className="titleToDoList">Lello</h1>
-                <div className="toDoListContainer"></div>
+                <div className="toDoListContainer">
                 <div className="inputToDoContainer">
-                    <FloatingLabel controlId="floatingName" label="Inserisci il testo per creare il To Do"
-                                   name="inputTextToDo" className="mb-3">
-                        <Form.Control type="text" name="inputTextToDo" value={RegisterForm.nome}
-                                      onChange={handleChange}/> {/*Aggiorno il valore del nome in tempo reale dentro lo stato RegisterForm tramite handleChange*/}
-                    </FloatingLabel>
+                    <Form.Control className="inputToDoCreate" size="lg" type="text" placeholder="Inserisci il testo per creare il To Do" name="inputTextToDo" value={inputText} onChange={(e) => setInputText(e.target.value)}/>
                     <Button className="buttonCreateToDo" variant="outline-primary">Crea una To-Do</Button>
                 </div>
                 <div className="ToDoesContainer">
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                </div>
                 </div>
             </div>
         </div>

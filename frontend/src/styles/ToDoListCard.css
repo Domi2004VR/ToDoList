@@ -28,7 +28,7 @@ body{
     padding: 5px 10px;
 }
 
-i.bi-trash:hover{
+i.cestino:hover{
     cursor: pointer;
     color:red;
     font-size: 1.7em;
@@ -37,7 +37,7 @@ i.bi-trash:hover{
 #titleId{
     font-weight: bold;
 }
-i.bi-trash{
+i.cestino{
     color: black;
     font-size: 1.6em;
 }

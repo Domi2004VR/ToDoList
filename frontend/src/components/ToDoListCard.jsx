@@ -9,7 +9,7 @@ function ToDoListCard({title,date}){
             <p>Creata il {date}</p>
             <div className="buttonsDiv">
                 <Button variant="outline-primary">Apri</Button>
-                <i className="bi bi-trash"></i>
+                <i className="cestino bi bi-trash"></i>
             </div>
         </div>
 
