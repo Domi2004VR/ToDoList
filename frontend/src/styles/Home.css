@@ -16,9 +16,9 @@
 
 #welcomep{
     text-align: left;
+    font-size: 2em;
 }
 .HomeButtonsDiv{
-
     display: flex;
     max-width: 30%;
     flex-direction: row;
