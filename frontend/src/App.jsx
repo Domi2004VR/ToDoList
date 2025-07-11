@@ -7,6 +7,7 @@ import PopupWindow from "./components/PopupWindow";
 import {useState} from "react";
 import Home from "./components/Home";
 import MyToDoLists from "./components/MyToDoLists";
+import ToDoList from "./components/ToDoList";
 
 function App() {
     const [viewPopup, setViewPopup] = useState(false);
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/home" element={<Home viewPopup={viewPopup} handlePopup={handlePopup} />} />
                 <Route path="/mytodolists" element={<MyToDoLists viewPopup={viewPopup} handlePopup={handlePopup} />} />
                 <Route path="/popup" element={<PopupWindow />} />
+                <Route path="/todo" element={<ToDoList />} />
             </Routes>
         </Router>
     )

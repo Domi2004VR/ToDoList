@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap');
 body{
-    font-family: 'Parastoo';
+    font-family: 'Raleway', sans-serif;
 }
 
 .cardContainer{
@@ -26,16 +27,17 @@ body{
 #openButton{
     padding: 5px 10px;
 }
-i{
-    font-size: 1.7em;
-}
 
-i:hover{
+i.bi-trash:hover{
     cursor: pointer;
     color:red;
-    font-size: 1.9em;
+    font-size: 1.7em;
 }
 
 #titleId{
     font-weight: bold;
+}
+i.bi-trash{
+    color: black;
+    font-size: 1.6em;
 }

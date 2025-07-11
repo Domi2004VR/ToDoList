@@ -10,11 +10,9 @@ function SideBar({nome}){
             </div>
             <div className="sectionDiv">
                 <p className="sideBarp">Home</p>
-                <i className="sideBarIcon bi bi-caret-right"></i>
             </div>
             <div className="sectionDiv">
                 <p className="sideBarp">Le mie To-Do List</p>
-                <i className="sideBarIcon bi bi-caret-right"></i>
             </div>
             <div id="logoutDiv" className="sectionDiv">
                 <div id="logoutRow">

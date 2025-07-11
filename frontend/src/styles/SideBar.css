@@ -1,5 +1,5 @@
 .sideBarContainer {
-    background-color: #FFFFFF;
+    background-color: #1f2937;
     border-right: 1px solid #e5e4ec;
     box-shadow: 3px 0 12px -3px rgba(44,100,144,0.08);
     display: inline-flex;
@@ -7,6 +7,7 @@
     align-items: start;
     min-width: 20vw;
     min-height: 100vh;
+    color: #f9fafb;
 }
 .sectionDiv{
     display: flex;
@@ -19,6 +20,9 @@
 }
 .sectionDiv p:hover{
     cursor: pointer;
+    color: darkorange;
+    text-decoration: underline;
+    font-weight: bold;
 }
 #welcomeDiv p:hover{
     cursor: default;
@@ -58,8 +62,8 @@ i{
 #welcomeDiv p{
     font-size: 1.7em;
 }
-p,i{
-    color: black;
+.sectionDiv p,i{
+    color: #f7f7f7;
 }
 .sideBarIcon:hover{
     color: black;
@@ -67,6 +71,6 @@ p,i{
 }
 #logoutButton:hover{
     cursor: pointer;
-    color:red;
+    color: #ef4444;
     font-size: 1.9em;
 }

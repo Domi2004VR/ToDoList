@@ -23,7 +23,7 @@ function MyToDoLists({viewPopup, handlePopup}) {
                <SideBar nome="Diego"/>
            </div>
            <div className="RestantePagina">
-               <h1>Le mie To-Do List</h1>
+               <h1 className="titleMyToDoListsPage">Le mie To-Do List</h1>
                <div className="myToDoButtonsDiv">
                    <Button  variant="outline-success">Crea una To-Do</Button>
                    <Button  variant="outline-info" onClick={handlePopup}>Unisciti a una To-Do</Button>

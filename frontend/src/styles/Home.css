@@ -8,14 +8,16 @@
 }
 .restantePagina{
     overflow-y: auto;
-    background: #f5f6f7;
+    background: linear-gradient(120deg, #e4d8fa 0%, #b5f0ff 100%);
     flex-grow: 1;              /* Occupa tutto lo spazio rimanente */
     padding: 32px;
     min-width: 0;
+
 }
 
 #welcomep{
     text-align: left;
+    color: black
 }
 .HomeButtonsDiv{
 
