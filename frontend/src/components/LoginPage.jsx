@@ -46,8 +46,8 @@ function LoginPage() {
             .then(data => {
                 setError(null); // login ok, nessun errore
                 console.log("Login riuscito:", data);
-                localStorage.setItem('jwt', data.accessToken)
-                navigate("/dashboard");
+                localStorage.setItem("jwt", data.accessToken);
+                navigate("/Home");
             })
             .catch(err => {
                 // Qui arrivi se è stato fatto `throw new Error(...)` e viene passato l'errore al catch (err)

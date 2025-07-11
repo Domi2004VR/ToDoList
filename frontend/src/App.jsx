@@ -12,11 +12,10 @@ import ToDoList from "./components/ToDoList";
 function App() {
     const [popup, setPopup] = useState({
         visible: false,
-        type:null,   //Lo uso per determinare il tipo di popup che voglio visualizzare
         data:null   //Lo uso per passare i dati da visualizzare nel popup
     });
-    const openPopup = (type,data) => {    //Funzione che apre il popup da passare a componenti figli
-        setPopup({visible: true  , type:type, data:data});
+    const openPopup = (type,data) => {    //Funzione che apre il popup che passo a componenti figli
+        setPopup({visible: true  , data:data});
     }
     const closePopup = () => {
         setPopup({visible: false, type: null, data: null}); //funzione che chiude il popup da passare a componenti figli

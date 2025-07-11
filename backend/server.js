@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cookieParser = require ('cookie-parser')
 const cors = require ('cors')
 const authRouter = require ('./routes/authRouter')
+const toDoListRouter = require ('./routes/toDoListRouter')
 
 
 app.use(express.json()); //converte tutte le stringhe json in oggetti js
@@ -15,6 +16,7 @@ app.use(cors({
 }))
 
 app.use('/auth', authRouter);
+app.use('/todolist', toDoListRouter);
 
 
 
