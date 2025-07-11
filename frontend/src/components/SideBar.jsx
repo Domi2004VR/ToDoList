@@ -1,13 +1,34 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "../styles/SideBar.css";
+import {logout} from "../services/api";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 function SideBar({nome, openPopup ,closePopup }){
+    const navigate = useNavigate();
+    const [error,setError] = useState(null);
+    function handleLogout(){
+        console.log("Logout effettuato");
+        logout()
+            .then(res=>{
+                navigate("/login");
+                console.log("Logout effettuato");
+            })
+            .catch(err=>{
+                setError(err.message);
+                console.log("fetch non riuscita: ", err.message);
+            })
+    }
     const popupLogout={
         title: "Sei sicuro di voler uscire?",
         message: "Se clicchi conferma verrai disconnesso immediatamente",
-        inputText: false,
-        handleConfirm: () => {
+        inputText: {
+            enable: false,
+            placeholder: "",
+            value: ""
         },
+        errorMessage: error,
+        handleConfirm: handleLogout,
         handleClose: function () {closePopup()},
     }
 
