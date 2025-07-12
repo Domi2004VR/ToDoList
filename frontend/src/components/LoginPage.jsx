@@ -8,7 +8,7 @@ import ErrorMessage from "./ErrorMessage";
 import {useNavigate} from "react-router-dom";
 
 
-function LoginPage() {
+function LoginPage({user, setUser}) {
     const navigate = useNavigate();
 
     const [LoginForm, setLoginForm] = useState({
@@ -46,6 +46,11 @@ function LoginPage() {
             .then(data => {
                 setError(null); // login ok, nessun errore
                 console.log("Login riuscito:", data);
+                setUser({
+                    id: data.id,
+                    nome: data.nome,
+                    cognome: data.cognome,
+                    email: data.email});
                 localStorage.setItem("jwt", data.accessToken);
                 navigate("/Home");
             })

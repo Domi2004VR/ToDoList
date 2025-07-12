@@ -3,7 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css"
 import {useState} from "react";
 
 
-function ToDo ({isDisabled, setIsDisabled, toDoes, setToDoes, done, setDone}) {
+function ToDo ({onRemove, description, key, isDisabled, setIsDisabled, toDoes, setToDoes, todo, id, done, setDone}) {
 
     const [input, setInput] = useState("");
 
@@ -18,7 +18,7 @@ function ToDo ({isDisabled, setIsDisabled, toDoes, setToDoes, done, setDone}) {
         setIsDisabled(false)
     }
 
-    function handleComplete (e) {
+    function handleDone (e) {
         setToDoes(toDoes.map((element)=>{
             if(e.target.id === element.id){
                 return {...element, done: true}
@@ -27,35 +27,33 @@ function ToDo ({isDisabled, setIsDisabled, toDoes, setToDoes, done, setDone}) {
         }));
     }
 
-    //funzione prova id
-    function handleId () {
-        return crypto.randomUUID();
+    function handleRemove (e) {
+        setToDoes(toDoes.filter((element) => element.id !== e.currentTarget.id));
     }
 
-    const id = handleId()
 
     return (
         <div className="ToDoContainer">
             <div className="checkBoxToDoContainer">
-                <Form.Check id="checkBoxToDo" checked={toDoes.done} onChange={handleComplete} aria-label="option 1" />
+                <Form.Check key={key} id="checkBoxToDo" checked={toDoes.done} onChange={handleDone} aria-label="option 1" />
             </div>
-            <Form.Control key={id} className='textToDo' type="text" name="inputTextToDo" disabled={isDisabled} value={input} onChange={handleInputChange}/>
+            <Form.Control key={key} className='textToDo' type="text" name="inputTextToDo" disabled={isDisabled} value={description} onChange={handleInputChange}/>
             {isDisabled? (
                 <div className="toDoButtonsContainer">
-                    <button className="icon-button" onClick={handleDisabledChange} id="editToDoButton">
-                        <i className="iconsToDo bi bi-pencil"></i>
+                    <button id={id} className="icon-button editToDoButton" onClick={handleDisabledChange}>
+                        <i id={id} className="iconsToDo bi bi-pencil"></i>
                     </button>
-                    <button className="icon-button" id="removeToDoButton">
-                        <i className="iconsToDo bi bi-trash"></i>
+                    <button id={id} className="icon-button removeToDoButton" onClick={handleRemove}>
+                        <i id={id} className="iconsToDo bi bi-trash"></i>
                     </button>
                 </div>
                 ) : (
                     <div className="toDoButtonsContainer">
-                        <button className="icon-button" id="confirmEditToDoButton">
-                            <i className="iconsToDo bi bi-check-circle"></i>
+                        <button id={id} className="icon-button confirmEditToDoButton" >
+                            <i id={id} className="iconsToDo bi bi-check-circle"></i>
                         </button>
-                        <button className="icon-button" id="cancelEditToDoButton">
-                            <i className="icon-button bi bi-x-circle"></i>
+                        <button id={id} className="icon-button cancelEditToDoButton">
+                            <i id={id} className="icon-button bi bi-x-circle"></i>
                         </button>
                     </div>
             )}

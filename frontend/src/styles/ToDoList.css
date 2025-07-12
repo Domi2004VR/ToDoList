@@ -55,6 +55,7 @@
     border-radius: 10px;
     flex-direction: column;
     overflow-y:auto ;
+    scrollbar-width: none;
 }
 .ToDoContainer{
     display: flex;

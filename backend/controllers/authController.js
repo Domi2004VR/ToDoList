@@ -53,6 +53,8 @@ exports.registerUser = (req, res) => {
                                         accessToken: accessToken,
                                         id: createdUser._id,
                                         email: createdUser.email,
+                                        nome: createdUser.nome,
+                                        cognome: createdUser.cognome,
                                     })
                                 })
 
@@ -99,6 +101,8 @@ exports.loginUser = (req, res) => {
                         accessToken: accessToken,
                         id: userFind._id,
                         email: userFind.email,
+                        nome: userFind.nome,
+                        cognome: userFind.cognome,
                     })
                 })
             })
@@ -142,6 +146,7 @@ const cookies = req.cookies
 exports.refreshToken = (req, res) => {
     //equivale a scrivere if(!cookies || !cookies.jwt) , cioè se cookies o cookies.jwt non esistono
     const cookies = req.cookies
+    console.log('ti sto per mandare i cookie' + JSON.stringify(cookies));
     if (!cookies?.jwt) {
         return res.status(401).json({ message: 'Refresh token non trovato' })
     }

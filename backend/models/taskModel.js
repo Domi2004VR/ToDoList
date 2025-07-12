@@ -10,11 +10,7 @@ const taskSchema = mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    creationDate: {
-      type: Date,
-      default: Date.now
-    },
-    Todolist:{
+    toDoList:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ToDoList',
         required: true,

@@ -8,21 +8,24 @@ import ToDo from './ToDo'
 import '../styles/ToDoList.css'
 
 function ToDoList({openPopup, closePopup}) {
-    const [toDoes, setToDoes] = useState([{
-        id: "",
-        description: "",
-        done: false,
-    }]);
+    const [toDoes, setToDoes] = useState([]);
     const [toDo, setToDo] = useState("")
 
 
     const [isDisabled, setIsDisabled] = useState(true);
     const [inputText, setInputText] = useState("");
 
- //   function handleInputSubmit(){
-  //      if toDo
-   //     setInputText("");
-    //}
+    function handleInputSubmit(){
+        if (inputText === ""){
+            return null;
+        }
+        setToDoes([...toDoes, { id: crypto.randomUUID(), description: inputText, done: false }]);
+        setInputText("")
+    }
+
+    function handleRemove(id) {
+        setToDoes(prev => prev.filter(todo => todo.id !== id));
+    }
 
     return (
         <div className="toDoListContainerPage">
@@ -34,21 +37,13 @@ function ToDoList({openPopup, closePopup}) {
                 <div className="toDoListContainer">
                 <div className="inputToDoContainer">
                     <Form.Control className="inputToDoCreate" size="lg" type="text" placeholder="Inserisci il testo per creare il To Do" name="inputTextToDo" value={inputText} onChange={(e) => setInputText(e.target.value)}/>
-                    <Button className="buttonCreateToDo" variant="outline-primary">Crea una To-Do</Button>
+                    <Button onClick={handleInputSubmit} className="buttonCreateToDo" variant="outline-primary">Crea una To-Do</Button>
                 </div>
                 <div className="ToDoesContainer">
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
-                    <ToDo isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    {toDoes.map((todo, index) =>{
+                        return <ToDo todo={todo} onRemove={handleRemove} description={todo.description} id={todo.id} key={todo.id} isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    })}
+
                 </div>
                 </div>
             </div>

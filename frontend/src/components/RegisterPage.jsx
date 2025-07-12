@@ -7,7 +7,7 @@ import {useState} from "react";
 import ErrorMessage from "./ErrorMessage";
 import {useNavigate} from "react-router-dom";
 
-function RegisterPage() {
+function RegisterPage({user, setUser}) {
     const navigate = useNavigate();
     const [RegisterForm , SetRegisterForm] = useState({
         nome:"",
@@ -50,7 +50,12 @@ function RegisterPage() {
               setError(null);           //non ho errori
               console.log("Registrazione avvenuta con successo", data);
               localStorage.setItem("jwt", data.accessToken);
-              navigate("/dashboard");   //Reindirizzo su dashboard
+              setUser({
+                  id: data.id,
+                  nome:data.nome,
+                  cognome:data.cognome,
+                  email: data.email});
+              navigate("/Home");   //Reindirizzo su dashboard
           })
           .catch((err)=>{
               //Si entra in questo catch se la risposta del server è negativa e si entra in Throw new error

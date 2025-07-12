@@ -4,10 +4,12 @@ import Button from "react-bootstrap/Button";
 import {createTodo} from "../services/api";
 import {joinTodo} from "../services/api";
 import {useState} from "react";
-function Home({openPopup,closePopup}) {
+function Home({openPopup,closePopup, user}) {
 
     const [error,setError] = useState(null);
+
     function handleCreateTodo(title){
+        openPopup("create" , popupCreate)
         createTodo(title)
             .then(res => {
                 const newTodo = res.body.todoList; //Se ricevo la nuova To-do creata dalla API che fa la fetch la salvo in newTodo per poi usarla
@@ -18,6 +20,7 @@ function Home({openPopup,closePopup}) {
             })
     }
     function handleJoinTodo(code){
+        openPopup("join" , popupJoin)
         joinTodo(code)
             .then(res=>{
                 const joinTodo = res.body.todoList; //Se ricevo la To-Do da joinare dalla API che fa la fetch la salvo in joinTodo per poi usarla
@@ -27,6 +30,7 @@ function Home({openPopup,closePopup}) {
                 setError(err.message);
             })
     }
+
 
     const popupJoin = {   //proprietà da passare al popup window per la finestra di unione a una To-Do
         title: "Unisciti a To Do",
@@ -57,15 +61,14 @@ function Home({openPopup,closePopup}) {
 
         <div className="homeContainer">
             <div className="SideBarContainer">
-                <SideBar nome="Diego" openPopup={openPopup} closePopup={closePopup}  />
+                <SideBar nome={user.nome} openPopup={openPopup} closePopup={closePopup}  />
             </div>
             <div className="restantePagina">
                 <h1>Home</h1>
                 <p id="welcomep" >Puoi iniziare a usare Tasky fin da subito :</p>
                 <div className="HomeButtonsDiv">
                     <Button  variant="outline-success" onClick={()=>{openPopup("create" , popupCreate)}}>Crea una To-Do</Button>
-                    <Button  variant="outline-info" onClick={()=>{openPopup("join" , popupJoin)}}
-                    >Unisciti a una To-Do</Button>
+                    <Button  variant="outline-info" onClick={()=>{openPopup("join" , popupJoin)}}>Unisciti a una To-Do</Button>
                 </div>
             </div>
         </div>

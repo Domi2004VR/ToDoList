@@ -5,22 +5,23 @@ exports.createToDoList = (req,res,next) => {
         return Math.floor(10000 + Math.random() * 90000).toString();
     }
     //salvo nella variabile title il titolo passatomi dal body della request
-    const title =req.body.title;
+    const title = req.body.title;
+    const userId = req.body.userId;
     //Se il title è vuoto ritorno un errore 401
     if(!title){
         return res.status(401).json({message: "title mancante"})
     }
-    ToDoList.findOne({title: title})
+    ToDoList.findOne({title:title})
         .then(todoListFind => {   //Questo controlla fra tutte le liste non solo quelle relative all'utente che sta effettuando la richiesta ma anche quelle relative ad altri utenti'
             if(todoListFind){return res.status(400).json({message:"Questo titolo è già stato utilizzato "})}
         })
     //Se non trovo nessuna lista con questo titolo ne creo una nuova
     ToDoList.create({
         title: title,
-        creator: id, //lo devo ancora prendere da qualche parte
+        creator: userId, //lo devo ancora prendere da qualche parte
         tasks:[],
         inviteCode: generateInviteCode() , //uso una funzione che genera un codice casuale per l'invito
-        members:[id],
+        members:[userId],
     })
         .then(CreatedToDoList => {
             res.status(201).json({message: "ToDoList creata", todoList: CreatedToDoList})  //resituisco al frontend la nuova lista creata
@@ -34,8 +35,10 @@ exports.createToDoList = (req,res,next) => {
 exports.joinToDoList = (req,res,next) => {
     //prendo il codice dalla richiesta
     const code = req.body.code;
+    const userId = req.body.userId;
+
     if(!code){
-        return res.status(401).json({message: "code mancante"}) //Restitusico une errore di codice mancante se  il campo è vuoto
+        return res.status(401).json({message: "codice mancante"}) //Restitusico une errore di codice mancante se  il campo è vuoto
     }
     ToDoList.findOne({inviteCode: code})
         .then(todoListFind => {

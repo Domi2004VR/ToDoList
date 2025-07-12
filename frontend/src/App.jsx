@@ -7,18 +7,72 @@ import {useState} from "react";
 import Home from "./components/Home";
 import MyToDoLists from "./components/MyToDoLists";
 import ToDoList from "./components/ToDoList";
+import {createTodo, joinTodo} from "./services/api";
 
 
 function App() {
+    const [user, setUser] = useState({
+        id: "",
+        nome: "",
+        cognome: "",
+        email: "",
+    });
+    const [inputValue , setInputValue] = useState("");  //Stato per gestire il contenuto dell'input di PopupWindow
+    const [error,setError] = useState(null);
+
+    const [todolists, setTodolists] = useState([{}]);
+
     const [popup, setPopup] = useState({
         visible: false,
         data:null   //Lo uso per passare i dati da visualizzare nel popup
     });
-    const openPopup = (type,data) => {    //Funzione che apre il popup che passo a componenti figli
-        setPopup({visible: true  , data:data});
+    const openPopup = (type) => {//Funzione che apre il popup che passo a componenti figli
+        if (type === "create") {
+            setPopup({data:popupCreate, visible: true});
+        }
     }
     const closePopup = () => {
         setPopup({visible: false, type: null, data: null}); //funzione che chiude il popup da passare a componenti figli
+    }
+
+    function handleCreateTodo() {
+        return createTodo(inputValue, user.id)
+    }
+
+    function handleJoinTodo(code){
+        joinTodo(code)
+            .then(res=>{
+                const joinTodo = res.body.todoList; //Se ricevo la To-Do da joinare dalla API che fa la fetch la salvo in joinTodo per poi usarla
+                //Aggiungo parte che porta ti collega alla pagina todolist
+            })
+            .catch(err=>{
+                setError(err.message);
+            })
+    }
+
+    const popupJoin = {   //proprietà da passare al popup window per la finestra di unione a una To-Do
+        title: "Unisciti a To Do",
+        message: "Inserisci il codice d'invito",
+        inputText:{
+            enable: true,
+            placeholder: "Inserisci il codice d'invito",
+            value: ""
+        },
+        errorMessage: error,
+        handleConfirm:handleJoinTodo,
+        handleClose: closePopup,
+    }
+    const popupCreate = {           //proprietà da passare al popup window per la finestra di creazione di una To-Do
+        title: "Crea una To-Do",
+        message: "Inserisci il nome della To-Do",
+        inputText:{
+            enable: true,
+            placeholder: "Inserisci il nome della To-Do",
+            value: ""
+        },
+        errorMessage: error,
+        handleConfirm: handleCreateTodo,
+        handleClose: closePopup,
     }
 
 
@@ -26,14 +80,14 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/home" element={<Home openPopup={openPopup}  closePopup={closePopup} />} />
-                <Route path="/mytodolists" element={<MyToDoLists openPopup={openPopup}  closePopup={closePopup} />} />
+                <Route path="/login" element={<LoginPage user={user} setUser={setUser} />} />
+                <Route path="/register" element={<RegisterPage user={user} setUser={setUser} />} />
+                <Route path="/home" element={<Home todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup} closePopup={closePopup} />} />
+                <Route path="/mytodolists" element={<MyToDoLists todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup}  closePopup={closePopup} />} />
                 <Route path="mytodo" element={<ToDoList openPopup={openPopup}  closePopup={closePopup} />} />
             </Routes>
             {popup.visible && (
-                <PopupWindow popupInfo={popup.data} />    /*Mostra una finestra con una richiesta con i dati passati dai figli memorizzati in popup.data*/
+                <PopupWindow popupInfo={popup.data} inputValue={inputValue} setInputValue={setInputValue} />    /*Mostra una finestra con una richiesta con i dati passati dai figli memorizzati in popup.data*/
             )}
         </Router>
     )

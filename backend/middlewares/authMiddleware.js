@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-exports.accessToken = (req, res, next) =>{
+exports.accessTokenVerify = (req, res, next) =>{
     //salvo nella variabile authHeader l'header inviato dalla richiesta chiamato authorization o Authorization (è key sensitive)
     const authHeader = req.headers.authorization || req.headers.authorization;
 

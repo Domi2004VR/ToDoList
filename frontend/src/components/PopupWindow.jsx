@@ -6,9 +6,8 @@ import '../styles/PopupWindow.css'
 import ErrorMessage from "./ErrorMessage";
 import {useNavigate} from "react-router-dom";
 
-function PopupWindow ({popupInfo}) {
+function PopupWindow ({inputValue, setInputValue, popupInfo}) {
 
-    const [inputValue , setInputValue] = useState("");  //Stato per gestire il contenuto dell'input
 
     function handleChange (e) {   //funzione che gestisce il cambiamento del valore dell'input
         setInputValue(e.target.value);
