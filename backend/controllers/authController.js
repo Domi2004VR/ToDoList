@@ -89,12 +89,14 @@ exports.loginUser = (req, res) => {
                 RefreshToken.create({token: refreshToken, userId: userFind._id})  // registro il refreshToken nel db
 
                 .then(() => {
+                    console.log("Ho creato il refresh token :" , refreshToken);
                     res.cookie('jwt', refreshToken, { //poi lo invio tramite cookie il refreshToken
                         httpOnly: true,  //solo tramite http
                         sameSite: 'strict', // solo per richieste all'interno del sito (aiuta a prevenire CSRF)
                         secure: process.env.NODE_ENV === 'production', // Solo su HTTPS in produzione
                         maxAge: 1000*60*60*24*7 // 7 giorni in millisecondi
                     })
+                    console.log("Ho creato il cookie e te l'ho mandato in res") ;
 
                     res.json({ //ed invio tramite body della risposta l'accessToken, che verrà poi conservato nel localStorage
                         message: 'Login effettuato con successo',

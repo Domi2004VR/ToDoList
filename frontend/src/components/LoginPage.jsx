@@ -28,9 +28,9 @@ function LoginPage({user, setUser}) {
         fetch('http://localhost:3001/auth/login', {
             method: 'POST',
             headers: {
-                credential: 'include',
                 'Content-Type': 'application/json' //serve per dire al server che gli sto inviando dei dati in formato json
             },
+            credentials: 'include',
             body: JSON.stringify({
                 email: LoginForm.email,
                 password: LoginForm.password,

@@ -28,9 +28,10 @@ function RegisterPage({user, setUser}) {
       fetch('http://localhost:3001/auth/register', {
           method : 'POST' ,
           headers: {
-              credential: 'include',
               'Content-Type': 'application/json'  //Serve ad avvisare il server che i dati che gli sto per mandare sono in formato JSON
           },
+          credentials: 'include',
+
           body: JSON.stringify({    //Passo in formato JSON tramite POST al server i dati raccolti nel form per la registrazione
               nome: RegisterForm.nome,
               cognome:RegisterForm.cognome,
