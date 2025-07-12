@@ -35,7 +35,8 @@ function App() {
         setPopup({visible: false, type: null, data: null}); //funzione che chiude il popup da passare a componenti figli
     }
 
-    function handleCreateTodo() {
+    function handleCreateTodo(inputValue) {
+        console.log(inputValue)
         return createTodo(inputValue, user.id)
     }
 

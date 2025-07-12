@@ -1,5 +1,5 @@
 const ToDoList = require('../models/toDoListModel');
-exports.createToDoList = (req,res,next) => {
+exports.createToDoList = (req,res) => {
     //Creo una funzione per generare codici di invito casuali
     const generateInviteCode = () => {
         return Math.floor(10000 + Math.random() * 90000).toString();
@@ -8,6 +8,9 @@ exports.createToDoList = (req,res,next) => {
     const title = req.body.title;
     const userId = req.body.userId;
     //Se il title è vuoto ritorno un errore 401
+    console.log ('ti sto per mandare il titolo: ' + title);
+    console.log ('ti sto per mandare lo userid: ' + userId);
+
     if(!title){
         return res.status(401).json({message: "title mancante"})
     }

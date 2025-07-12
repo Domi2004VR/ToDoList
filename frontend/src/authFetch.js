@@ -28,6 +28,7 @@ function authFetch(url, options = {}) {
                         if (!refreshRes.ok) {
                             return refreshRes.json().then(err => {
                                 console.log("ho preso la strada sbagliata");
+                                window.location.href= "/login"
                                 localStorage.removeItem("jwt");
                                 throw new Error(err.message || "Sessione scaduta");
                             });
