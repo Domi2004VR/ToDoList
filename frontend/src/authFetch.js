@@ -43,7 +43,7 @@ function authFetch(url, options = {}) {
                                 return fetch(url, { ...options, headers })
                                     .then(secondRes => {
                                         if (!secondRes.ok) {
-                                            throw new Error("Errore anche dopo il refresh");
+                                            throw new Error("Errore dopo aver tentato il refresh dell'accessToken");
                                         }
                                         return secondRes.json();
                                     });

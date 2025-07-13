@@ -13,10 +13,7 @@ export function createTodo(title, userId ) {
         })
     })
         .then(data => {
-            if (!data.ok ) {
-                throw new Error(data.message);
-            }
-
+            console.log("ti sto rispondendo con questi dati: " + JSON.stringify(data.todoList, null, 2));
             return data.todoList
 
         })
@@ -24,6 +21,30 @@ export function createTodo(title, userId ) {
             console.log(err);
         })
 }
+
+export function deleteTodo(userId, todolistId) {
+    return authFetch('http://localhost:3001/todolist/delete', {
+        method: 'DELETE',
+        body: JSON.stringify({
+            userId: userId,
+            todolistId: todolistId
+        })
+    })
+        .then(data => {
+           return console.log(data.message);
+        })
+}
+
+export function openList(listId) {
+    return authFetch(`http://localhost:3001/todolist/open/${listId}`, {
+        method: 'GET',
+
+    })
+    .then(data => {
+        return data.todoList;
+    })
+}
+
 
 //funzione che fa la fetch per joinare una To-do e restituisce la todolist trovata se va a buon fine altrimenti un errore
 export function joinTodo(code) {

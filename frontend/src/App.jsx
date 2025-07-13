@@ -3,11 +3,12 @@ import LandingPage from './components/LandingPage';
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import PopupWindow from "./components/PopupWindow";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Home from "./components/Home";
 import MyToDoLists from "./components/MyToDoLists";
 import ToDoList from "./components/ToDoList";
 import {createTodo, joinTodo} from "./services/api";
+
 
 
 function App() {
@@ -22,13 +23,28 @@ function App() {
 
     const [todolists, setTodolists] = useState([{}]);
 
+    const[todolist, setTodolist] = useState({});
+
     const [popup, setPopup] = useState({
         visible: false,
         data:null   //Lo uso per passare i dati da visualizzare nel popup
     });
+
+
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, [])
+
+
     const openPopup = (type) => {//Funzione che apre il popup che passo a componenti figli
         if (type === "create") {
             setPopup({data:popupCreate, visible: true});
+        } else if (type === "login") {
+            setPopup({data:popupJoin, visible: true})
         }
     }
     const closePopup = () => {
@@ -38,7 +54,24 @@ function App() {
     function handleCreateTodo(inputValue) {
         console.log(inputValue)
         return createTodo(inputValue, user.id)
+            .then((createdToDoList) => {
+
+                // Formatto la data in stile dd-mm-yyyy
+                const rawDate = new Date(createdToDoList.creationDate);
+                const formattedDate = `${rawDate.getDate().toString().padStart(2, '0')}-${(rawDate.getMonth()+1).toString().padStart(2, '0')}-${rawDate.getFullYear()}`;
+
+                // Crea una nuova copia dell'oggetto contenente tutte le informazioni della todolist con la data formattata
+                const todoWithFormattedDate = {
+                    ...createdToDoList,
+                    creationDate: formattedDate, // sovrascrive il campo originale della data
+                };
+                setTodolist({...todolist, todoWithFormattedDate});
+                closePopup();
+
+            })
+
     }
+
 
     function handleJoinTodo(code){
         joinTodo(code)
@@ -84,8 +117,8 @@ function App() {
                 <Route path="/login" element={<LoginPage user={user} setUser={setUser} />} />
                 <Route path="/register" element={<RegisterPage user={user} setUser={setUser} />} />
                 <Route path="/home" element={<Home todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup} closePopup={closePopup} />} />
-                <Route path="/mytodolists" element={<MyToDoLists todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup}  closePopup={closePopup} />} />
-                <Route path="mytodo" element={<ToDoList openPopup={openPopup}  closePopup={closePopup} />} />
+                <Route path="/mytodolists" element={<MyToDoLists todolist={todolist} todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup}  closePopup={closePopup} />} />
+                <Route path="/mytodo" element={<ToDoList openPopup={openPopup}  closePopup={closePopup} />} />
             </Routes>
             {popup.visible && (
                 <PopupWindow popupInfo={popup.data} inputValue={inputValue} setInputValue={setInputValue} />    /*Mostra una finestra con una richiesta con i dati passati dai figli memorizzati in popup.data*/

@@ -47,11 +47,14 @@ function LoginPage({user, setUser}) {
             .then(data => {
                 setError(null); // login ok, nessun errore
                 console.log("Login riuscito:", data);
-                setUser({
+                const currentUser = {
                     id: data.id,
                     nome: data.nome,
                     cognome: data.cognome,
-                    email: data.email});
+                    email: data.email
+                }
+                localStorage.setItem("user", JSON.stringify(currentUser));
+                setUser(currentUser);
                 localStorage.setItem("jwt", data.accessToken);
                 navigate("/Home");
             })
