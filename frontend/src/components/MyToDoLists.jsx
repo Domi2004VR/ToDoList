@@ -6,7 +6,7 @@ import {useEffect} from "react";
 import authFetch from "../authFetch";
 import {openList} from "../services/api";
 
-function MyToDoLists({todolist, todolists, setTodolists, openPopup, closePopup, user, listToOpen , setListToOpen}) {
+function MyToDoLists({todolist, todolists, setTodolists, handleOpen, openPopup, closePopup, user, listToOpen , setListToOpen}) {
 
 
     useEffect(() => {
@@ -49,7 +49,7 @@ function MyToDoLists({todolist, todolists, setTodolists, openPopup, closePopup, 
                </div>
                <div className="cardsContainer">
                    {todolists.map((element) => (
-                       <ToDoListCard listToOpen={listToOpen} setListToOpen={setListToOpen} userId={user.id} setTodolists={setTodolists} todolists={todolists} todolistId={element._id} title={element.title} date={element.creationDate} />
+                       <ToDoListCard handleOpen={handleOpen} listToOpen={listToOpen} setListToOpen={setListToOpen} userId={user.id} setTodolists={setTodolists} todolists={todolists} todolistId={element._id} title={element.title} date={element.creationDate} />
                    ))}
 
                </div>

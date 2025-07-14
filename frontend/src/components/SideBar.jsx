@@ -19,18 +19,7 @@ function SideBar({nome, openPopup ,closePopup }){
                 console.log("fetch non riuscita: ", err.message);
             })
     }
-    const popupLogout={
-        title: "Sei sicuro di voler uscire?",
-        message: "Se clicchi conferma verrai disconnesso immediatamente",
-        inputText: {
-            enable: false,
-            placeholder: "",
-            value: ""
-        },
-        errorMessage: error,
-        handleConfirm: handleLogout,
-        handleClose: function () {closePopup()},
-    }
+
 
     return(
         <div className="sideBarContainer">
@@ -38,15 +27,15 @@ function SideBar({nome, openPopup ,closePopup }){
                 <p className="sideBarp">Benvenuto {nome}!</p>
             </div>
             <div className="sectionDiv">
-                <p className="sideBarp">Home</p>
+                <p onClick={() => navigate('/Home')} className="sideBarp">Home</p>
             </div>
             <div className="sectionDiv">
-                <p className="sideBarp">Le mie To-Do List</p>
+                <p onClick={() => navigate('/mytodolists')} className="sideBarp">Le mie To-Do List</p>
             </div>
             <div id="logoutDiv" className="sectionDiv">
                 <div id="logoutRow">
-                    <p onClick={()=>{openPopup("logout",popupLogout)}}  className="sideBarp">Logout</p>
-                    <i onClick={()=>{openPopup("logout",popupLogout)}}  id="logoutButton" className="sideBarIcon bi bi-box-arrow-right"></i>
+                    <p onClick={()=>{openPopup("logout")}}  className="sideBarp">Logout</p>
+                    <i onClick={()=>{openPopup("logout")}}  id="logoutButton" className="sideBarIcon bi bi-box-arrow-right"></i>
                 </div>
 
             </div>
