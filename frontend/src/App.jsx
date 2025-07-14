@@ -21,18 +21,23 @@ function App() {
     const [inputValue , setInputValue] = useState("");  //Stato per gestire il contenuto dell'input di PopupWindow
     const [error,setError] = useState(null);
 
+    //array di tutte le to do list dello user
     const [todolists, setTodolists] = useState([{}]);
 
+    //to do list creata
     const[todolist, setTodolist] = useState({});
 
+    //stato per gestire il popup
     const [popup, setPopup] = useState({
         visible: false,
         data:null   //Lo uso per passare i dati da visualizzare nel popup
     });
+
+    //stato per aprire la lista specifica dell'utente
     const[listToOpen, setListToOpen] = useState({});
 
 
-
+    //funzione che recupera l'utente dal localstorage e lo setta nello stato user (solo una volta, quando si avvia l'app)
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
@@ -44,10 +49,11 @@ function App() {
     const openPopup = (type) => {//Funzione che apre il popup che passo a componenti figli
         if (type === "create") {
             setPopup({data:popupCreate, visible: true});
-        } else if (type === "login") {
+        } else if (type === "join") {
             setPopup({data:popupJoin, visible: true})
         }
     }
+
     const closePopup = () => {
         setPopup({visible: false, type: null, data: null}); //funzione che chiude il popup da passare a componenti figli
     }
@@ -74,14 +80,12 @@ function App() {
     }
 
 
-    function handleJoinTodo(code){
-        joinTodo(code)
-            .then(res=>{
-                const joinTodo = res.body.todoList; //Se ricevo la To-Do da joinare dalla API che fa la fetch la salvo in joinTodo per poi usarla
-                //Aggiungo parte che porta ti collega alla pagina todolist
-            })
-            .catch(err=>{
-                setError(err.message);
+    function handleJoinTodo(inputValue) {
+       console.log(inputValue)
+        joinTodo(inputValue, user.id)
+            .then((data) => {
+                setListToOpen(data);
+                closePopup();
             })
     }
 
