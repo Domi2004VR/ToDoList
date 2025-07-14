@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import MyToDoLists from "./components/MyToDoLists";
 import ToDoList from "./components/ToDoList";
 import {createTodo, joinTodo} from "./services/api";
+import toDoList from "./components/ToDoList";
 
 
 
@@ -58,21 +59,25 @@ function App() {
         setPopup({visible: false, type: null, data: null}); //funzione che chiude il popup da passare a componenti figli
     }
 
+    function formatDate(date){
+        const rawDate = new Date(date);
+        return `${rawDate.getDate().toString().padStart(2, '0')}-${(rawDate.getMonth()+1).toString().padStart(2, '0')}-${rawDate.getFullYear()}`;
+
+    }
     function handleCreateTodo(inputValue) {
         console.log(inputValue)
         return createTodo(inputValue, user.id)
             .then((createdToDoList) => {
 
                 // Formatto la data in stile dd-mm-yyyy
-                const rawDate = new Date(createdToDoList.creationDate);
-                const formattedDate = `${rawDate.getDate().toString().padStart(2, '0')}-${(rawDate.getMonth()+1).toString().padStart(2, '0')}-${rawDate.getFullYear()}`;
-
+                const formattedDate = formatDate(createdToDoList.creationDate);
                 // Crea una nuova copia dell'oggetto contenente tutte le informazioni della todolist con la data formattata
                 const todoWithFormattedDate = {
                     ...createdToDoList,
                     creationDate: formattedDate, // sovrascrive il campo originale della data
                 };
                 setTodolist({...todolist, todoWithFormattedDate});
+                setTodolists([...todolists, todoWithFormattedDate]);
                 closePopup();
 
             })
@@ -84,7 +89,14 @@ function App() {
        console.log(inputValue)
         joinTodo(inputValue, user.id)
             .then((data) => {
-                setListToOpen(data);
+                const formattedDate = formatDate(data.creationDate);
+                const todoWithFormattedDate = {
+                    ...data,
+                    creationDate: formattedDate, // sovrascrive il campo originale della data
+                };
+                setListToOpen({...listToOpen, todoWithFormattedDate}); //Aggiorno la lista delle to-do list con la nuova lista con data formattata
+                setTodolists([...todolists, todoWithFormattedDate]);  //Aggiorno la lista delle mie to-do lists
+
                 closePopup();
             })
     }

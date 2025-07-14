@@ -24,7 +24,7 @@ function SideBar({nome, openPopup ,closePopup }){
     return(
         <div className="sideBarContainer">
             <div id="welcomeDiv" className="sectionDiv">
-                <p className="sideBarp">Benvenuto {nome}!</p>
+                <p className="sideBarp" >Benvenuto {nome}!</p>
             </div>
             <div className="sectionDiv">
                 <p onClick={() => navigate('/Home')} className="sideBarp">Home</p>
