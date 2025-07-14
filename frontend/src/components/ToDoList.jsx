@@ -3,17 +3,32 @@ import SideBar from "./SideBar";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ToDo from './ToDo'
 import '../styles/ToDoList.css'
+import {getTodo, openList} from '../services/api'
+import { useParams } from 'react-router-dom';
 
-function ToDoList({openPopup, closePopup}) {
+function ToDoList({ user ,listToOpen, setListToOpen, openPopup, closePopup}) {
     const [toDoes, setToDoes] = useState([]);
     const [toDo, setToDo] = useState("")
 
-
     const [isDisabled, setIsDisabled] = useState(true);
     const [inputText, setInputText] = useState("");
+
+    const { listId } = useParams();
+
+    console.log("questa è la l'id della lista da aprire: " + listToOpen._id);
+
+
+    useEffect(() => {
+        getTodo(listId)
+        .then((toDoListInfo) =>{
+            setListToOpen(toDoListInfo)
+        })
+    }, [])
+
+
 
     function handleInputSubmit(){
         if (inputText === ""){
@@ -30,10 +45,11 @@ function ToDoList({openPopup, closePopup}) {
     return (
         <div className="toDoListContainerPage">
             <div className="sideBarContainerToDoPage">
-                <SideBar nome="Lello" openPopup={openPopup} closePopup={closePopup}  />
+                <SideBar nome={user.nome} openPopup={openPopup} closePopup={closePopup}  />
             </div>
             <div className="restantePaginaToDoPage">
-                <h1 className="titleToDoList">Lello</h1>
+                <h1 className="titleToDoList">{listToOpen.title}</h1>
+                <p className="inviteCode">Il tuo codice d'invito: <b> {listToOpen.inviteCode} </b> </p>
                 <div className="toDoListContainer">
                 <div className="inputToDoContainer">
                     <Form.Control className="inputToDoCreate" size="lg" type="text" placeholder="Inserisci il testo per creare il To Do" name="inputTextToDo" value={inputText} onChange={(e) => setInputText(e.target.value)}/>

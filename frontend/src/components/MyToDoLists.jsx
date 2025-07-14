@@ -2,10 +2,12 @@ import SideBar from "./SideBar";
 import ToDoListCard from "./ToDoListCard";
 import Button from 'react-bootstrap/Button';
 import "../styles/myToDoLists.css";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import authFetch from "../authFetch";
+import {openList} from "../services/api";
 
-function MyToDoLists({todolist, todolists, setTodolists, openPopup,closePopup, user}) {
+function MyToDoLists({todolist, todolists, setTodolists, openPopup, closePopup, user, listToOpen , setListToOpen}) {
+
 
     useEffect(() => {
         //se si entra nell'errore significa che c'è un'errore di passaggio riguardante il parametro dell'id dello user
@@ -47,7 +49,7 @@ function MyToDoLists({todolist, todolists, setTodolists, openPopup,closePopup, u
                </div>
                <div className="cardsContainer">
                    {todolists.map((element) => (
-                       <ToDoListCard userId={user.id} setTodolists={setTodolists} todolists={todolists} todolistId={element._id} title={element.title} date={element.creationDate} />
+                       <ToDoListCard listToOpen={listToOpen} setListToOpen={setListToOpen} userId={user.id} setTodolists={setTodolists} todolists={todolists} todolistId={element._id} title={element.title} date={element.creationDate} />
                    ))}
 
                </div>

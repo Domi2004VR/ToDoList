@@ -29,6 +29,7 @@ function App() {
         visible: false,
         data:null   //Lo uso per passare i dati da visualizzare nel popup
     });
+    const[listToOpen, setListToOpen] = useState({});
 
 
 
@@ -117,8 +118,8 @@ function App() {
                 <Route path="/login" element={<LoginPage user={user} setUser={setUser} />} />
                 <Route path="/register" element={<RegisterPage user={user} setUser={setUser} />} />
                 <Route path="/home" element={<Home todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup} closePopup={closePopup} />} />
-                <Route path="/mytodolists" element={<MyToDoLists todolist={todolist} todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup}  closePopup={closePopup} />} />
-                <Route path="/mytodo" element={<ToDoList openPopup={openPopup}  closePopup={closePopup} />} />
+                <Route path="/mytodolists" element={<MyToDoLists listToOpen={listToOpen} setListToOpen={setListToOpen} todolist={todolist} todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup}  closePopup={closePopup} />} />
+                <Route path="/mytodolists/:listId" element={<ToDoList user={user} listToOpen={listToOpen} setListToOpen={setListToOpen} openPopup={openPopup}  closePopup={closePopup} />} />
             </Routes>
             {popup.visible && (
                 <PopupWindow popupInfo={popup.data} inputValue={inputValue} setInputValue={setInputValue} />    /*Mostra una finestra con una richiesta con i dati passati dai figli memorizzati in popup.data*/

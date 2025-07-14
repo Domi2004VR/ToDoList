@@ -6,15 +6,14 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 
-function ToDoListCard({ userId,setTodolists, todolists, title, date, todolistId}) {
+function ToDoListCard({ listToOpen, setListToOpen ,userId,setTodolists, todolists, title, date, todolistId}) {
 
-    const[listToOpen, setListToOpen] = useState({});
 
     const navigate = useNavigate();
 
     console.log(userId + " " + todolistId);
 
-    function handleRemoveToDoList (e) {
+    function handleRemoveToDoList () {
         console.log("questo è l'id dell'utente da eliminare" + userId);
         console.log("questo è l'id della lista da eliminare" + todolistId);
         deleteTodo(userId, todolistId )
@@ -28,7 +27,7 @@ function ToDoListCard({ userId,setTodolists, todolists, title, date, todolistId}
         openList(todolistId)
             .then(toDoListToOpen => {
                 setListToOpen(toDoListToOpen)
-                navigate('http://localhost:3000/mytodo')
+                navigate(`${todolistId}`)
             })
     }
 
@@ -38,7 +37,7 @@ function ToDoListCard({ userId,setTodolists, todolists, title, date, todolistId}
             <p id="titleId">{title}</p>
             <p>Creata il {date}</p>
             <div className="buttonsDiv">
-                <Button variant="outline-primary">Apri</Button>
+                <Button onClick={handleOpen} variant="outline-primary">Apri</Button>
                 <i id={todolistId} onClick={handleRemoveToDoList} className="cestino bi bi-trash"></i>
             </div>
         </div>

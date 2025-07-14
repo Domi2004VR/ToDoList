@@ -45,6 +45,15 @@ export function openList(listId) {
     })
 }
 
+export function getTodo(listId) {
+    return authFetch(`http://localhost:3001/todolist/mytodo/${listId}`, {
+        method: 'GET'
+    })
+        .then(data => {
+            return data.todoList;
+        })
+}
+
 
 //funzione che fa la fetch per joinare una To-do e restituisce la todolist trovata se va a buon fine altrimenti un errore
 export function joinTodo(code) {
