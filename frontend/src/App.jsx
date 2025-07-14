@@ -10,6 +10,7 @@ import ToDoList from "./components/ToDoList";
 import {createTodo, joinTodo} from "./services/api";
 
 
+
 function App() {
     const [user, setUser] = useState({
         id: "",
@@ -50,8 +51,6 @@ function App() {
             setPopup({data:popupCreate, visible: true});
         } else if (type === "join") {
             setPopup({data:popupJoin, visible: true})
-        }else if (type === "logout") {
-            setPopup({data:popupLogout, visible:true});
         }
     }
 
@@ -82,16 +81,12 @@ function App() {
 
 
     function handleJoinTodo(inputValue) {
-        console.log(inputValue)
+       console.log(inputValue)
         joinTodo(inputValue, user.id)
             .then((data) => {
                 setListToOpen(data);
                 closePopup();
             })
-    }
-
-    function handleLogout(){
-        console.log("Logout effettuato");
     }
 
     const popupJoin = {   //proprietà da passare al popup window per la finestra di unione a una To-Do
@@ -117,18 +112,6 @@ function App() {
         errorMessage: error,
         handleConfirm: handleCreateTodo,
         handleClose: closePopup,
-    }
-    const popupLogout={
-        title: "Sei sicuro di voler uscire?",
-        message: "Se clicchi conferma verrai disconnesso immediatamente",
-        inputText: {
-            enable: false,
-            placeholder: "",
-            value: ""
-        },
-        errorMessage: error,
-        handleConfirm: handleLogout,
-        handleClose: function () {closePopup()},
     }
 
 
