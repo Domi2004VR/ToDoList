@@ -6,7 +6,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import {useEffect, useState} from "react";
 import ToDo from './ToDo'
 import '../styles/ToDoList.css'
-import {getTodo, openList} from '../services/api'
+import {createTasks, getTodo, openList} from '../services/api'
 import { useParams } from 'react-router-dom';
 
 function ToDoList({ user ,listToOpen, setListToOpen, openPopup, closePopup}) {
@@ -26,21 +26,28 @@ function ToDoList({ user ,listToOpen, setListToOpen, openPopup, closePopup}) {
         .then((toDoListInfo) =>{
             setListToOpen(toDoListInfo)
         })
-    }, [])
+    }, [toDoes])
 
-
-
-    function handleInputSubmit(){
+    function handleCreateTasks (listToOpenId) {
+        console.log("sto stampando listToOpenId: " + listToOpenId);
         if (inputText === ""){
-            return null;
+            return null
         }
-        setToDoes([...toDoes, { id: crypto.randomUUID(), description: inputText, done: false }]);
-        setInputText("")
+        createTasks(inputText, listToOpenId)
+            .then(updatedList => {
+                console.log("sono todolist e ho ricevuto le tasks: " + JSON.stringify(updatedList));
+                setToDoes([updatedList]);
+                setInputText("")
+            })
     }
+
 
     function handleRemove(id) {
         setToDoes(prev => prev.filter(todo => todo.id !== id));
     }
+
+    function handleSubmit() {}
+
 
     return (
         <div className="toDoListContainerPage">
@@ -53,7 +60,7 @@ function ToDoList({ user ,listToOpen, setListToOpen, openPopup, closePopup}) {
                 <div className="toDoListContainer">
                 <div className="inputToDoContainer">
                     <Form.Control className="inputToDoCreate" size="lg" type="text" placeholder="Inserisci il testo per creare il To Do" name="inputTextToDo" value={inputText} onChange={(e) => setInputText(e.target.value)}/>
-                    <Button onClick={handleInputSubmit} className="buttonCreateToDo" variant="outline-primary">Crea una To-Do</Button>
+                    <Button onClick={()=>{handleCreateTasks(listToOpen._id)}} className="buttonCreateToDo" variant="outline-primary">Crea una To-Do</Button>
                 </div>
                 <div className="ToDoesContainer">
                     {toDoes.map((todo, index) =>{

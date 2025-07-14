@@ -8,7 +8,7 @@ exports.getToDoList = (req, res) => {
         return res.status(400).json({message: "è necessario inserire l'id della todolist per ricevere tutte le info correlate"})
     }
 
-    ToDoList.findOne({_id:todolistId})
+    ToDoList.findOne({_id:todolistId}).populate('tasks')
         .then((listFind) =>{
             if (!listFind){
                 return res.status(404).json({message: "non è stata trovata nessuna todolist con quell'id"})
@@ -24,6 +24,8 @@ exports.getToDoList = (req, res) => {
 
 exports.createTask = (req, res) => {
     const {description, todolistId} = req.body;
+    console.log("ti sto mandando l'id di todolist: " + todolistId);
+    console.log("ti sto mandando description: " + description);
 
     if(!todolistId){
         return res.status(400).json({message: "è richiesto l'id della todolist per poter inserire un nuovo task"})
@@ -41,10 +43,18 @@ exports.createTask = (req, res) => {
                 return res.status(400).json({message: "non è stato possibile creare il task"})
             }
 
-            res.status(201).json({
-                message: "task creato con successo",
-                task: taskCreated
-            })
+            return ToDoList.findByIdAndUpdate(todolistId, {
+                //prendo l'id della lista, aggiungo il task appena creato con successo in maniera univoca (non iserisce duplicati al contrario di $push)
+                $addToSet: {tasks: taskCreated},
+            }, {new: true}).populate('tasks')
+
+                .then((ToDoListUpdated) =>{
+                    console.log(ToDoListUpdated.tasks)
+                    res.status(200).json({
+                        message: "task creato con successo",
+                        tasks: ToDoListUpdated.tasks,
+                    })
+                })
 
         })
         .catch((err) =>{

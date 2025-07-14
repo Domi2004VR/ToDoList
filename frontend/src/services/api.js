@@ -85,3 +85,18 @@ export function logout() {
                 if (!res.ok) throw new Error("Errore nel logout");
             })
 }
+
+export function createTasks (description, listId) {
+    console.log("sto ricevendo il listId: " + listId);
+    return authFetch('http://localhost:3001/task/create', {
+        method: 'PUT',
+        body: JSON.stringify({
+            description: description,
+            todolistId: listId
+        })
+    })
+        .then(data => {
+            console.log("ho ricevuto la risposta " + JSON.stringify(data.tasks));
+            return data.tasks;
+        })
+}
