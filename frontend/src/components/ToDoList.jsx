@@ -11,42 +11,39 @@ import { useParams } from 'react-router-dom';
 
 function ToDoList({ user ,listToOpen, setListToOpen, openPopup, closePopup}) {
     const [toDoes, setToDoes] = useState([]);
-    const [toDo, setToDo] = useState("")
+    const [toDo, setToDo] = useState([])
 
     const [isDisabled, setIsDisabled] = useState(true);
     const [inputText, setInputText] = useState("");
 
     const { listId } = useParams();
 
-    console.log("questa è la l'id della lista da aprire: " + listToOpen._id);
-
 
     useEffect(() => {
         getTodo(listId)
         .then((toDoListInfo) =>{
             setListToOpen(toDoListInfo)
+            setToDoes(toDoListInfo.tasks)
         })
-    }, [toDoes])
+    }, []); //questo useEffect serve per caricare la lista quando si entra nella pagina, non viene più ricaricato
 
     function handleCreateTasks (listToOpenId) {
-        console.log("sto stampando listToOpenId: " + listToOpenId);
         if (inputText === ""){
             return null
         }
         createTasks(inputText, listToOpenId)
             .then(updatedList => {
-                console.log("sono todolist e ho ricevuto le tasks: " + JSON.stringify(updatedList));
-                setToDoes([updatedList]);
+                //ricevo la lista di task (array) e la memorizzo come stato di toDoes che re-triggera il .map che è colui che renderizza i tasks (componente ToDo.jsx)
+                //riga 64
+                setToDoes(updatedList);
+                //resetto a 0 il campo di input che mi serviva per impostare la descrizione della nuova task da fare
                 setInputText("")
             })
     }
 
-
     function handleRemove(id) {
         setToDoes(prev => prev.filter(todo => todo.id !== id));
     }
-
-    function handleSubmit() {}
 
 
     return (
@@ -63,8 +60,8 @@ function ToDoList({ user ,listToOpen, setListToOpen, openPopup, closePopup}) {
                     <Button onClick={()=>{handleCreateTasks(listToOpen._id)}} className="buttonCreateToDo" variant="outline-primary">Crea una To-Do</Button>
                 </div>
                 <div className="ToDoesContainer">
-                    {toDoes.map((todo, index) =>{
-                        return <ToDo todo={todo} onRemove={handleRemove} description={todo.description} id={todo.id} key={todo.id} isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
+                    {toDoes.map((todo) =>{
+                        return <ToDo todo={todo} onRemove={handleRemove} description={todo.description} id={todo._id} isDisabled={isDisabled} setIsDisabled={setIsDisabled} toDoes={toDoes} setToDoes={setToDoes}/>
                     })}
 
                 </div>

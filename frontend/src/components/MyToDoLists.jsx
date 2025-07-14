@@ -15,22 +15,18 @@ function MyToDoLists({todolist, todolists, setTodolists, handleOpen, openPopup, 
 
         authFetch(`http://localhost:3001/todolist/user/${user.id}`)
             .then(data => {
-                console.log(data.todoLists);
 
                 //cambio la data fornita dal db con il formato italiano da inserire nelle schede
-                console.log("sono arrivato qui, prima di data.map");
                 const formatted = data.todoLists.map(todo => ({
                     ...todo,
                     creationDate: new Date(todo.creationDate).toLocaleDateString('it-IT'),
                 }));
-                console.log("sono arrivato qui, dopo di data.map");
                 setTodolists(formatted);
-                console.log("sono arrivato qui, alla fine");
             })
             .catch(err => {
                 console.error("Errore nel caricamento delle to-do:", err);
             });
-    } , [user.id, todolist, todolists]); // quando viene rederizzato il componente MyToDoLists gli viene passato l'oggetto user da App.jsx e di conseguenza viene eseguita la fetch
+    } , [user.id, todolist]);
                                                 // ho aggiunto anche che viene eseguita la fetch quando cambia lo stato del todolist creato
                                                 // inoltre anche quando si elimina il todolist tramite il cestino viene filtrato(con filter) lo stato todolists, ritriggerando la fetch
 

@@ -55,24 +55,31 @@ function App() {
     }
 
     const closePopup = () => {
-        setPopup({visible: false, type: null, data: null}); //funzione che chiude il popup da passare a componenti figli
+        setPopup({visible: false, type: null, data: null});//funzione che chiude il popup da passare a componenti figli
+        setInputValue("");
     }
 
+    //funzione che serve per trasformare la data nel formato in cui mi serve ( dd-mm-yyyy )
+    function formatDate(date){
+        const rawDate = new Date(date);
+        return `${rawDate.getDate().toString().padStart(2, '0')}-${(rawDate.getMonth()+1).toString().padStart(2, '0')}-${rawDate.getFullYear()}`;
+    }
+
+
     function handleCreateTodo(inputValue) {
-        console.log(inputValue)
         return createTodo(inputValue, user.id)
             .then((createdToDoList) => {
 
                 // Formatto la data in stile dd-mm-yyyy
-                const rawDate = new Date(createdToDoList.creationDate);
-                const formattedDate = `${rawDate.getDate().toString().padStart(2, '0')}-${(rawDate.getMonth()+1).toString().padStart(2, '0')}-${rawDate.getFullYear()}`;
-
+                const formattedDate = formatDate(createdToDoList.creationDate);
                 // Crea una nuova copia dell'oggetto contenente tutte le informazioni della todolist con la data formattata
                 const todoWithFormattedDate = {
                     ...createdToDoList,
                     creationDate: formattedDate, // sovrascrive il campo originale della data
                 };
                 setTodolist({...todolist, todoWithFormattedDate});
+                setTodolists([...todolists, todoWithFormattedDate]);
+                setInputValue("");
                 closePopup();
 
             })
@@ -84,7 +91,13 @@ function App() {
        console.log(inputValue)
         joinTodo(inputValue, user.id)
             .then((data) => {
-                setListToOpen(data);
+                const formattedDate = formatDate(data.creationDate)
+                const todoWithFormattedDate = {
+                    ...data,
+                    creationDate: formattedDate, //serve per sovrascrivere il campo originale della data nel formato (dd-mm-yyyy)
+                }
+                setListToOpen({...listToOpen, todoWithFormattedDate});
+                setTodolists([...todolists, todoWithFormattedDate]);
                 closePopup();
             })
     }

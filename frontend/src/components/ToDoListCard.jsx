@@ -11,11 +11,9 @@ function ToDoListCard({ listToOpen, setListToOpen ,userId,setTodolists, todolist
 
     const navigate = useNavigate();
 
-    console.log(userId + " " + todolistId);
-
     function handleRemoveToDoList () {
         deleteTodo(userId, todolistId )
-        const toDoListsFiltered= todolists.filter(element => { return todolistId !== element.id
+        const toDoListsFiltered= todolists.filter(element => { return todolistId !== element._id
         })
         setTodolists(toDoListsFiltered)
     }

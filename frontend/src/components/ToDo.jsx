@@ -1,22 +1,47 @@
 import Form from "react-bootstrap/Form";
 import "bootstrap-icons/font/bootstrap-icons.css"
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {deleteTask, updateTask} from "../services/api";
 
 
-function ToDo ({onRemove, description, key, isDisabled, setIsDisabled, toDoes, setToDoes, todo, id, done, setDone}) {
+function ToDo ({onRemove, description, isDisabled, setIsDisabled, toDoes, setToDoes, todo, id, done, setDone}) {
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedDescription, setEditedDescription] = useState(description);
+    const [originalDescription, setOriginalDescription] = useState(description);
 
-    const [input, setInput] = useState("");
 
-    function handleInputChange (event) {
-        setInput(event.target.value);
+
+    function handleInputChange(event) {
+        setEditedDescription(event.target.value);
     }
 
-    function handleDisabledChange() {
-        if (isDisabled === false) {
-            setIsDisabled(true)
-        }
-        setIsDisabled(false)
+
+    function handleCancelEdit() {
+        setEditedDescription(originalDescription); // reimposta la descrizione che aveva prima della modifica
+        setIsEditing(false);
     }
+
+
+    function handleEditClick() {
+        setOriginalDescription(editedDescription); // salva lo descrizione attuale prima della modifica
+        setIsEditing(true);
+    }
+
+    function handleConfirmEdit() {
+        // aggiorna la descrizione nel frontend
+        const updatedToDos = toDoes.map((t) => {
+            if (t._id === todo._id) {
+                return { ...t, description: editedDescription };
+            }
+            return t;
+        });
+
+        setToDoes(updatedToDos);
+        updateTask(todo._id, editedDescription) //questo aggiorna il backend
+        setIsEditing(false);
+
+    }
+
 
     function handleDone (e) {
         setToDoes(toDoes.map((element)=>{
@@ -27,33 +52,34 @@ function ToDo ({onRemove, description, key, isDisabled, setIsDisabled, toDoes, s
         }));
     }
 
-    function handleRemove (e) {
-        setToDoes(toDoes.filter((element) => element.id !== e.currentTarget.id));
+    function handleRemove () {
+        deleteTask(todo._id)
+        setToDoes(toDoes.filter((element) => element._id !== todo._id));
     }
 
 
     return (
         <div className="ToDoContainer">
             <div className="checkBoxToDoContainer">
-                <Form.Check key={key} id="checkBoxToDo" checked={toDoes.done} onChange={handleDone} aria-label="option 1" />
+                <Form.Check  id="checkBoxToDo" checked={toDoes.done} onChange={handleDone} aria-label="option 1" />
             </div>
-            <Form.Control key={key} className='textToDo' type="text" name="inputTextToDo" disabled={isDisabled} value={description} onChange={handleInputChange}/>
-            {isDisabled? (
+            <Form.Control  className='textToDo' type="text" name="inputTextToDo" disabled={!isEditing} value={editedDescription} onChange={handleInputChange}/>
+            {isEditing ? (
                 <div className="toDoButtonsContainer">
-                    <button id={id} className="icon-button editToDoButton" onClick={handleDisabledChange}>
-                        <i id={id} className="iconsToDo bi bi-pencil"></i>
+                    <button className="icon-button confirmEditToDoButton" onClick={handleConfirmEdit}>
+                        <i className="iconsToDo bi bi-check-circle"></i>
                     </button>
-                    <button id={id} className="icon-button removeToDoButton" onClick={handleRemove}>
-                        <i id={id} className="iconsToDo bi bi-trash"></i>
+                    <button className="icon-button cancelEditToDoButton" onClick={handleCancelEdit}>
+                        <i id="removeToDo" className="icon-button bi bi-x-circle"></i>
                     </button>
                 </div>
                 ) : (
                     <div className="toDoButtonsContainer">
-                        <button id={id} className="icon-button confirmEditToDoButton" >
-                            <i id={id} className="iconsToDo bi bi-check-circle"></i>
+                        <button className="icon-button editToDoButton" onClick={handleEditClick}>
+                            <i className="iconsToDo bi bi-pencil"></i>
                         </button>
-                        <button id={id} className="icon-button cancelEditToDoButton">
-                            <i id={id} className="icon-button bi bi-x-circle"></i>
+                        <button className="icon-button removeToDoButton" onClick={handleRemove}>
+                            <i className="iconsToDo bi bi-trash"></i>
                         </button>
                     </div>
             )}

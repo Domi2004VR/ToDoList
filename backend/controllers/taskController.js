@@ -62,3 +62,58 @@ exports.createTask = (req, res) => {
             return res.status(500).json({message: "Errore del server durante la creazione del task"})
         })
 }
+
+exports.deleteTask = (req, res) => {
+    const {taskId} = req.body
+
+    if(!taskId){
+        return res.status(400).json({message: "è richiesto l'id della task per procedere con l'eliminazione"})
+    }
+
+    Task.deleteOne({_id:taskId})
+    .then((taskDeleted) =>{
+        if(!taskDeleted){
+            return res.status(400).json({message: "errore durante l'eliminazione del task"})
+        }
+        res.status(200).json({message: "task eliminato con successo"})
+    })
+        .catch((err) =>{
+            console.log(err)
+            return res.status(500).json({message: "Errore del server durante l'eliminazione del task"})
+        })
+
+}
+
+
+exports.updateTask = (req, res) => {
+    const {taskId, description} = req.body
+    console.log("ti sto mandando la description: " + description);
+
+    if(!taskId){
+        return res.status(400).json({message: "è richiesto l'id della task per procedere con la modifica"})
+    }
+
+    if(!description){
+        return res.status(400).json({message: "è richiesto una descrizione per procedere con la modifica"})
+    }
+
+    Task.updateOne({_id:taskId}, {
+        $set: {description: description},
+    })
+        .then((taskUpdated) =>{
+            if(!taskUpdated){
+                return res.status(400).json({message: "errore durante la modifica del task"})
+            }
+
+            res.status(200).json({
+                message: "task modificato con successo",
+                taskUpdated: taskUpdated
+            })
+
+        })
+        .catch((err) =>{
+            console.log(err)
+            return res.status(500).json({message: "Errore del server durante la modifica del task"})
+        })
+
+}

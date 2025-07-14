@@ -91,6 +91,8 @@ exports.deleteToDoList = (req, res) => {
 
                     })
             }
+
+
             return ToDoList.deleteOne({_id: todolistId})
             .then(deletedToDo => {
                 res.status(200).json({message: "la to do list è stata eliminata con successo"})

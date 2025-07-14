@@ -109,8 +109,9 @@
 .iconsToDo.bi-trash:hover{
     color: red
 }
-.iconsToDo.bi-x-circle:hover{
-    color: red
+#removeToDo:hover{
+    color: red;
+    font-size: 1.7em
 }
 .iconsToDo.bi-check-circle:hover{
     color: green
