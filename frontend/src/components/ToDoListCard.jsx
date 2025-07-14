@@ -14,10 +14,7 @@ function ToDoListCard({ listToOpen, setListToOpen ,userId,setTodolists, todolist
     console.log(userId + " " + todolistId);
 
     function handleRemoveToDoList () {
-        console.log("questo è l'id dell'utente da eliminare" + userId);
-        console.log("questo è l'id della lista da eliminare" + todolistId);
         deleteTodo(userId, todolistId )
-        console.log("la funzione handle remove viene eseguita")
         const toDoListsFiltered= todolists.filter(element => { return todolistId !== element.id
         })
         setTodolists(toDoListsFiltered)
