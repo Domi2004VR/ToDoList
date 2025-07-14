@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
@@ -7,20 +7,17 @@ import {useEffect, useState} from "react";
 import Home from "./components/Home";
 import MyToDoLists from "./components/MyToDoLists";
 import ToDoList from "./components/ToDoList";
-import {createTodo, joinTodo, openList} from "./services/api";
-
+import {createTodo, joinTodo} from "./services/api";
 
 
 function App() {
-
     const [user, setUser] = useState({
         id: "",
         nome: "",
         cognome: "",
         email: "",
     });
-    //Stato per gestire il contenuto dell'input di PopupWindow
-    const [inputValue , setInputValue] = useState("");
+    const [inputValue , setInputValue] = useState("");  //Stato per gestire il contenuto dell'input di PopupWindow
     const [error,setError] = useState(null);
 
     //array di tutte le to do list dello user
@@ -38,13 +35,6 @@ function App() {
     //stato per aprire la lista specifica dell'utente
     const[listToOpen, setListToOpen] = useState({});
 
-    function handleOpen(){
-        openList(listToOpen._id)
-            .then(toDoListToOpen => {
-                setListToOpen(toDoListToOpen)
-                window.location.href=(`http://localhost:3000/mytodolists/${listToOpen._id}`)
-            })
-    }
 
     //funzione che recupera l'utente dal localstorage e lo setta nello stato user (solo una volta, quando si avvia l'app)
     useEffect(() => {
@@ -60,6 +50,8 @@ function App() {
             setPopup({data:popupCreate, visible: true});
         } else if (type === "join") {
             setPopup({data:popupJoin, visible: true})
+        }else if (type === "logout") {
+            setPopup({data:popupLogout, visible:true});
         }
     }
 
@@ -90,12 +82,16 @@ function App() {
 
 
     function handleJoinTodo(inputValue) {
+        console.log(inputValue)
         joinTodo(inputValue, user.id)
             .then((data) => {
-                setListToOpen(data);   //Imposto i dati che ottengo tramite la fetch con il codice invito nello stato ListToOpen
-                handleOpen();
+                setListToOpen(data);
                 closePopup();
             })
+    }
+
+    function handleLogout(){
+        console.log("Logout effettuato");
     }
 
     const popupJoin = {   //proprietà da passare al popup window per la finestra di unione a una To-Do
@@ -122,6 +118,18 @@ function App() {
         handleConfirm: handleCreateTodo,
         handleClose: closePopup,
     }
+    const popupLogout={
+        title: "Sei sicuro di voler uscire?",
+        message: "Se clicchi conferma verrai disconnesso immediatamente",
+        inputText: {
+            enable: false,
+            placeholder: "",
+            value: ""
+        },
+        errorMessage: error,
+        handleConfirm: handleLogout,
+        handleClose: function () {closePopup()},
+    }
 
 
     return (
@@ -131,7 +139,7 @@ function App() {
                 <Route path="/login" element={<LoginPage user={user} setUser={setUser} />} />
                 <Route path="/register" element={<RegisterPage user={user} setUser={setUser} />} />
                 <Route path="/home" element={<Home todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup} closePopup={closePopup} />} />
-                <Route path="/mytodolists" element={<MyToDoLists listToOpen={listToOpen} handleOpen={handleOpen} setListToOpen={setListToOpen} todolist={todolist} todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup}  closePopup={closePopup} />} />
+                <Route path="/mytodolists" element={<MyToDoLists listToOpen={listToOpen} setListToOpen={setListToOpen} todolist={todolist} todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup}  closePopup={closePopup} />} />
                 <Route path="/mytodolists/:listId" element={<ToDoList user={user} listToOpen={listToOpen} setListToOpen={setListToOpen} openPopup={openPopup}  closePopup={closePopup} />} />
             </Routes>
             {popup.visible && (

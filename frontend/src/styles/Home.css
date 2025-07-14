@@ -13,11 +13,25 @@
     padding: 32px;
     min-width: 0;
 }
-
+#icon{
+    max-width: 20vh;
+}
 #welcomep{
     text-align: left;
-    font-size: 2em;
+    font-size: 1.5em;
 }
+#PStart{
+    text-align: left;
+    font-size: 1.5em;
+
+}
+
+#PStart span{
+    font-weight: bold;
+    font-size: 1.0em;
+}
+
+
 .HomeButtonsDiv{
     display: flex;
     max-width: 30%;

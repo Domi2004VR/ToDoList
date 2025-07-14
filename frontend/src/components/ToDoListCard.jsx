@@ -1,8 +1,13 @@
 import Button from 'react-bootstrap/Button';
+
 import "../styles/ToDoListCard.css";
+
 import {deleteTodo} from "../services/api";
+
 import {openList} from "../services/api";
+
 import {useState} from "react";
+
 import {useNavigate} from "react-router-dom";
 
 
@@ -14,21 +19,35 @@ function ToDoListCard({ listToOpen, setListToOpen ,userId,setTodolists, todolist
     console.log(userId + " " + todolistId);
 
     function handleRemoveToDoList () {
+
         console.log("questo è l'id dell'utente da eliminare" + userId);
+
         console.log("questo è l'id della lista da eliminare" + todolistId);
+
         deleteTodo(userId, todolistId )
+
         console.log("la funzione handle remove viene eseguita")
+
         const toDoListsFiltered= todolists.filter(element => { return todolistId !== element.id
+
         })
+
         setTodolists(toDoListsFiltered)
+
     }
 
     function handleOpen(){
+
         openList(todolistId)
+
             .then(toDoListToOpen => {
+
                 setListToOpen(toDoListToOpen)
+
                 navigate(`${todolistId}`)
+
             })
+
     }
 
     return(
@@ -43,6 +62,7 @@ function ToDoListCard({ listToOpen, setListToOpen ,userId,setTodolists, todolist
         </div>
 
     )
+
 }
 
 export default ToDoListCard;
