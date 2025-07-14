@@ -47,18 +47,21 @@ export function openList(listId) {
 
 
 //funzione che fa la fetch per joinare una To-do e restituisce la todolist trovata se va a buon fine altrimenti un errore
-export function joinTodo(code) {
-    return fetch('http://localhost:3001/todolist/join', {   //Invia al backend il codice di invito della To-do da joinare
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({code: code})
+export function joinTodo(code, userId) {
+    return authFetch(`http://localhost:3001/todolist/join`, {
+        method: 'PUT',     //Uso una PUT e non una get perchè devo aggiungere anche l'id utente ai membri e non solo recuperare la lista
+        body: JSON.stringify({
+            userId:userId,
+            code: code
+        })
     })
-            .then(res => {
-                if (!res.ok) throw new Error("Errore nella creazione");
-                return res.json(); // restituisce la todolist trovata
-            });
+    .then(data => {
+        console.log("Ho ricevuto la lista aggiornata dal backend" + JSON.stringify(data.todoList) );
+        return data.todoList;  //Una volta che ho trovato la todolist, restituisco la todolist con i membri aggiornati
+    })
+        .catch(err => {
+            console.log("Il codice è errato");
+        })
 }
 
 //funzione che fa la fetch per fare il logout

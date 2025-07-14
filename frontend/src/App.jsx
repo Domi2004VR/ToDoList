@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
@@ -20,11 +20,13 @@ function App() {
     });
     const [inputValue , setInputValue] = useState("");  //Stato per gestire il contenuto dell'input di PopupWindow
     const [error,setError] = useState(null);
-
+    //array di tutte le todolist dello user
     const [todolists, setTodolists] = useState([{}]);
-
+    //Todo list creata
     const[todolist, setTodolist] = useState({});
-
+    //stato per gestire il join di una todo
+    const [listToJoin, setListToJoin ] = useState({});
+    //stato per gestire il popup
     const [popup, setPopup] = useState({
         visible: false,
         data:null   //Lo uso per passare i dati da visualizzare nel popup
@@ -43,7 +45,7 @@ function App() {
     const openPopup = (type) => {//Funzione che apre il popup che passo a componenti figli
         if (type === "create") {
             setPopup({data:popupCreate, visible: true});
-        } else if (type === "login") {
+        } else if (type === "join") {
             setPopup({data:popupJoin, visible: true})
         }
     }
@@ -73,14 +75,14 @@ function App() {
     }
 
 
-    function handleJoinTodo(code){
-        joinTodo(code)
-            .then(res=>{
-                const joinTodo = res.body.todoList; //Se ricevo la To-Do da joinare dalla API che fa la fetch la salvo in joinTodo per poi usarla
-                //Aggiungo parte che porta ti collega alla pagina todolist
-            })
-            .catch(err=>{
-                setError(err.message);
+    function handleJoinTodo(inputValue){
+        console.log(inputValue);
+        joinTodo(inputValue, user.id)
+            .then ((data) =>{
+                console.log("Questo mi arriva dal backend " + JSON.stringify(data) );
+                setListToJoin(data);
+                window.location.href = "http://localhost:3000/mytodo";
+                closePopup();
             })
     }
 
@@ -118,7 +120,7 @@ function App() {
                 <Route path="/register" element={<RegisterPage user={user} setUser={setUser} />} />
                 <Route path="/home" element={<Home todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup} closePopup={closePopup} />} />
                 <Route path="/mytodolists" element={<MyToDoLists todolist={todolist} todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup}  closePopup={closePopup} />} />
-                <Route path="/mytodo" element={<ToDoList openPopup={openPopup}  closePopup={closePopup} />} />
+                <Route path="/mytodo" element={<ToDoList  listToOpen ={listToJoin} openPopup={openPopup}  closePopup={closePopup} />} />
             </Routes>
             {popup.visible && (
                 <PopupWindow popupInfo={popup.data} inputValue={inputValue} setInputValue={setInputValue} />    /*Mostra una finestra con una richiesta con i dati passati dai figli memorizzati in popup.data*/

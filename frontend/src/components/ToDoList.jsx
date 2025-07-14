@@ -7,7 +7,7 @@ import {useState} from "react";
 import ToDo from './ToDo'
 import '../styles/ToDoList.css'
 
-function ToDoList({openPopup, closePopup}) {
+function ToDoList({listToOpen , openPopup, closePopup}) {
     const [toDoes, setToDoes] = useState([]);
     const [toDo, setToDo] = useState("")
 

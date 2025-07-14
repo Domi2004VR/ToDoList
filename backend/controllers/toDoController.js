@@ -126,18 +126,26 @@ exports.openToDoList = (req,res) => {
 }
 
 
-exports.joinToDoList = (req,res,next) => {
+exports.joinToDoList = (req,res) => {
+    console.log("ho ricevuto la fetch del join");
     //prendo il codice dalla richiesta
     const code = req.body.code;
     const userId = req.body.userId;
+    console.log("codice che mi arriva dal frontend: " + code);
+    console.log("id utente che mi arriva dal frontend: " + userId);
 
     if(!code){
         return res.status(401).json({message: "codice mancante"}) //Restitusico une errore di codice mancante se  il campo è vuoto
     }
     ToDoList.findOne({inviteCode: code})
         .then(todoListFind => {
-            if(!todoListFind){return res.status(400).json({message: "Codice non valido"})}  //restituisco un errore se il codice non appartiene a nessuna to-dolist
-            res.status(200).json({message: "ToDoList trovata", todoList: todoListFind}) //restitusico la todolist com il codice trovato se esiste
+            if(!todoListFind){return res.status(400).json({message: "Codice non valido"})}//restituisco un errore se il codice non appartiene a nessuna to-dolist
+            ToDoList.findByIdAndUpdate(todoListFind._id, {  //Prendo l'id della lista trovata e ne modifico la lista dei membri aggiungendo l'id dell'utente che sta effettuando la richiesta
+                $addToSet:{members: userId }  //addToSet evita di inserire dublicati al contrario di $push
+            }, {new :true}) //Restituisce la lista intera con i membri aggiornati
+                .then(UpdatedToDoList => {
+                    res.status(200).json({message: "ToDoList trovata e lista membri aggiornata", todoList: UpdatedToDoList}) //restituisco la todolist con il codice trovato e con i membri aggiornati
+                })
         })
         .catch(err => {
             res.status(500).json({message: "Errore interno del server"})  //restitusico errore se il problema dipende dal server
