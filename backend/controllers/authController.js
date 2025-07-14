@@ -177,7 +177,8 @@ exports.refreshToken = (req, res) => {
 
     })
 
-        .catch(err => {
+        .catch(error => {
+            console.error(error)
             return res.status(500).json({ message: 'Errore del server durante la verifica del refresh token' })
         })
 
