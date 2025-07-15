@@ -13,7 +13,6 @@ export function createTodo(title, userId ) {
         })
     })
         .then(data => {
-            console.log("ti sto rispondendo con questi dati: " + JSON.stringify(data.todoList, null, 2));
             return data.todoList
 
         })
@@ -65,7 +64,7 @@ export function joinTodo(code, userId) {
         })
     })
     .then(data => {
-        console.log("Ho ricevuto la lista aggiornata dal backend" + JSON.stringify(data.todoList) );
+
         return data.todoList;  //Una volta che ho trovato la todolist, restituisco la todolist con i membri aggiornati
     })
         .catch(err => {
@@ -87,7 +86,6 @@ export function logout() {
 }
 
 export function createTasks (description, listId) {
-    console.log("sto ricevendo il listId: " + listId);
     return authFetch('http://localhost:3001/task/create', {
         method: 'PUT',
         body: JSON.stringify({
@@ -96,7 +94,34 @@ export function createTasks (description, listId) {
         })
     })
         .then(data => {
-            console.log("ho ricevuto la risposta " + JSON.stringify(data.tasks));
+
             return data.tasks;
         })
+}
+
+
+export function deleteTask (taskId) {
+    return authFetch(`http://localhost:3001/task/delete`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+            taskId: taskId
+        })
+    })
+        .then(data => {
+            return data.message;
+        })
+}
+
+export function updateTask (taskId, description) {
+    return authFetch(`http://localhost:3001/task/update`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            taskId: taskId,
+            description: description
+        })
+    })
+    .then(data => {
+        return data;
+    })
+
 }
