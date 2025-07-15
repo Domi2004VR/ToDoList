@@ -1,4 +1,5 @@
 const ToDoList = require('../models/toDoListModel');
+const Task = require('../models/taskModel');
 const User = require("../models/userModel");
 
 exports.getToDoListsByUser = (req, res) => {
@@ -92,11 +93,22 @@ exports.deleteToDoList = (req, res) => {
                     })
             }
 
-
-            return ToDoList.deleteOne({_id: todolistId})
-            .then(deletedToDo => {
-                res.status(200).json({message: "la to do list è stata eliminata con successo"})
+            //Se l'utente è il creatore della lista elimino prima tutti i task che appartengono a quella lista
+            Task.deleteMany({toDoList: todolistId})
+            .then(deletedTasks => {
+                console.log("ho task pari a numero " + deletedTasks.deletedCount);
+                //dopo aver eliminato tutti i task elimino anche la lista
+                return ToDoList.deleteOne({_id: todolistId}) //metto il return perchè in questa maniera prima di procedere con
+                // il prossimo then aspetta la fine di ToDoList.deleteMany
             })
+                .then(deletedToDoList => {
+                    //restituisco messaggio positivo
+                    res.status(200).json({message: "lista eliminata con successo"})
+                })
+                .catch(err => {
+                    res.status(500).json({message: "Errore interno del server"})
+                })
+
         })
 }
 //middleware per accedere alla to do list tramite id
@@ -131,22 +143,21 @@ exports.openToDoList = (req,res) => {
 exports.joinToDoList = (req,res) => {
     console.log("ho ricevuto la fetch del join");
     //prendo il codice dalla richiesta
-    const code = req.body.code;
+    const code = req.body.code.trim();  //Devo necessariamente eliminando gli spazi(trim) altrimenti DB restituisce null
     const userId = req.body.userId;
-    console.log("codice che mi arriva dal frontend: " + code);
-    console.log("id utente che mi arriva dal frontend: " + userId);
 
     if(!code){
-        return res.status(401).json({message: "codice mancante"}) //Restitusico une errore di codice mancante se  il campo è vuoto
+        return res.status(401).json({message: "codice mancante"}) //Restitusico une errore di codice mancante se il campo è vuoto
     }
-    ToDoList.findOne({inviteCode: code})
+    ToDoList.findOne({inviteCode: code })
         .then(todoListFind => {
-            if(!todoListFind){return res.status(400).json({message: "Codice non valido"})}//restituisco un errore se il codice non appartiene a nessuna to-dolist
+            if(!todoListFind){
+                return res.status(400).json({message: "Codice non valido"})}//restituisco un errore se il codice non appartiene a nessuna to-dolist
             ToDoList.findByIdAndUpdate(todoListFind._id, {  //Prendo l'id della lista trovata e ne modifico la lista dei membri aggiungendo l'id dell'utente che sta effettuando la richiesta
                 $addToSet:{members: userId }  //addToSet evita di inserire dublicati al contrario di $push
             }, {new :true}) //Restituisce la lista intera con i membri aggiornati
                 .then(UpdatedToDoList => {
-                    res.status(200).json({message: "ToDoList trovata e lista membri aggiornata", todoList: UpdatedToDoList}) //restituisco la todolist con il codice trovato e con i membri aggiornati
+                    return res.status(200).json({message: "ToDoList trovata e lista membri aggiornata", todoList: UpdatedToDoList}) //restituisco la todolist con il codice trovato e con i membri aggiornati
                 })
         })
         .catch(err => {

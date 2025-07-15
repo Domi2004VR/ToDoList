@@ -93,6 +93,8 @@ function App() {
        console.log(inputValue)
         joinTodo(inputValue, user.id)
             .then((data) => {
+                console.log("Sto joinando una todo" );
+                console.log(data.creationDate);
                 const formattedDate = formatDate(data.creationDate);
                 const todoWithFormattedDate = {
                     ...data,

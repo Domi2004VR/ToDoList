@@ -71,7 +71,7 @@ export function joinTodo(code, userId) {
         return data.todoList;  //Una volta che ho trovato la todolist, restituisco la todolist con i membri aggiornati
     })
         .catch(err => {
-            console.log("Il codice è errato");
+            console.log("Il codice è errato" + err);
         })
 }
 

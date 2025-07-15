@@ -38,12 +38,12 @@ html, body {
     margin-top: 0;
     font-size:1.5em;
 }
-.buttonsDiv{
+.buttonsLandingDiv{
     display:flex;
     flex-direction: column;
     justify-content: space-between;
 }
-.Btn  {
+.BtnLanding  {
     min-height:50px ;
     margin-bottom:20px;
 }

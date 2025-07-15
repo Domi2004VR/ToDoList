@@ -9,6 +9,10 @@ const toDoListRouter = require ('./routes/toDoListRouter')
 const taskRouter = require ('./routes/taskRouter')
 
 
+
+
+
+
 app.use(express.json()); //converte tutte le stringhe json in oggetti js
 app.use(cookieParser()) //serve a rendere leggibili i cookie inviati dal client
 app.use(cors({
