@@ -12,7 +12,7 @@ const taskRouter = require ('./routes/taskRouter')
 
 
 const server = http.createServer(app) //serve necessariamente per collegare un websocket
-const io = new Server(server , {cors:{origin: process.env.FRONTEND_URL} }) ; //permette a react di connettersi al websocket
+const io = new Server(server , {cors:{origin: `${process.env.FRONTEND_URL}`} }) ; //permette a react di connettersi al websocket
 
 
 //io ascolta l'evento connection che viene emesso a ogni nuova connesssione
@@ -27,7 +27,7 @@ io.on('connection', (socket) => { //socket è la connessione con il singolo clie
 app.use(express.json()); //converte tutte le stringhe json in oggetti js
 app.use(cookieParser()) //serve a rendere leggibili i cookie inviati dal client
 app.use(cors({
-    origin: process.env.FRONTEND_URL, //accetta richieste solo dall'url del mio frontend (per sicurezza)
+    origin: `${process.env.FRONTEND_URL}`, //accetta richieste solo dall'url del mio frontend (per sicurezza)
     credentials: true, //permette anche di inviare cookie da quell'url senza che vengano bloccati
 }))
 
