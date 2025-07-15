@@ -1,6 +1,7 @@
 import Form from "react-bootstrap/Form";
 import "bootstrap-icons/font/bootstrap-icons.css"
 import {useEffect, useState} from "react";
+import {io} from "socket.io-client";
 import {deleteTask, handleTask, updateTask} from "../services/api";
 
 
@@ -50,7 +51,9 @@ function ToDo ({onRemove, description, isDisabled, setIsDisabled, toDoes, setToD
     function handleDone (e) {
         //Inverto la condizione in maniera che lo stato anche se non aggiornato non influisce sul backend
         //Sono costretto a fare così perchè lo stato non si aggiorna in tempo reale ma al prossimo rendering
-        const newDone = !todo.isDone
+        const newDone = !todo.isDone;
+
+        socket.emit('CompletedTask' , {description : editedDescription})
         //Aggiorno il backend
         handleTask(todo._id, newDone);
         //Aggiorno il frontend impostando lo stato del task su Done solo per il task con l'id ricevuto
@@ -61,6 +64,7 @@ function ToDo ({onRemove, description, isDisabled, setIsDisabled, toDoes, setToD
             return element;
         }));
 
+
     }
 
     function handleRemove () {
@@ -69,6 +73,19 @@ function ToDo ({onRemove, description, isDisabled, setIsDisabled, toDoes, setToD
         // viene triggarato il re-rendering poichè il map è fatto su To Does(che renderizza il componente To-Do.jsx) che viene modificato
         setToDoes(toDoes.filter((element) => element._id !== todo._id));
     }
+
+
+    const socket = io('http://localhost:3002');
+
+    useEffect(() => {
+        socket.on('TaskNotify' , (data)=>  {
+            alert('Task completata con successo!'+ data.description);
+        });
+        return ()=> socket.off('TaskNotify');
+    },[todo.isDone]);
+
+
+
 
 
     return (
