@@ -11,7 +11,7 @@ exports.accessTokenVerify = (req, res, next) =>{
     //se invece è tutto corretto
     const token= authHeader.split(' ') [1] //serve per prendere solo il token escludendo la parola Bearer
     //verifico che l'access token sia valido
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    jwt.verify(token, `${process.env.ACCESS_TOKEN_SECRET}`, (err, decoded) => {
         if(err){ //se non è valido perchè è scaduto o è stato manomesso ritorno un'errore
             return res.status(401).json({message: 'token non valido o scaduto'})
         }

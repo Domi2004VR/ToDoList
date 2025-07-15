@@ -37,7 +37,7 @@ app.use('/task', taskRouter);
 
 
 
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
+mongoose.connect(`${process.env.MONGODB_CONNECTION_STRING}`);
 const db = mongoose.connection
 
 db.once('open', () => {

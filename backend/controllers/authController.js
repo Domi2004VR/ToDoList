@@ -7,10 +7,10 @@ const RefreshToken = require('../models/refreshTokenModel');
 const createToken = (user) => {
     const accessToken = jwt.sign({
         id: user._id, //informazione payload
-    }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'}) //data di scadenza dell'accessToken
+    }, `${process.env.ACCESS_TOKEN_SECRET}`, {expiresIn: '15m'}) //data di scadenza dell'accessToken
     const refreshToken = jwt.sign({
         id: user._id //informazione payload
-    }, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '7d'}) //data di scadenza del refreshToken
+    }, `${process.env.REFRESH_TOKEN_SECRET}`, {expiresIn: '7d'}) //data di scadenza del refreshToken
 
     return {accessToken, refreshToken}
 }
@@ -157,14 +157,14 @@ exports.refreshToken = (req, res) => {
             return res.status(401).json({ message: 'Refresh token non valido' })
         }
 
-        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => { //se invece lo trova, allora faccio una verifica del refreshToken
+        jwt.verify(refreshToken, `${process.env.REFRESH_TOKEN_SECRET}`, (err, decoded) => { //se invece lo trova, allora faccio una verifica del refreshToken
             if(err || refreshTokenFind.userId.toString() !== decoded.id) { //se questa verifica restituisce un errore o semplicemente id dell'utente presente nel db non coincide con quello salvato nel db allora restituisco un errore
                 return res.status(401).json({ message: 'Refresh token non valido o manomesso' })
             }
             //se è tutto valido creo un nuovo accessToken
             const accessToken = jwt.sign({
                 id: decoded.id,
-            }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
+            }, `${process.env.ACCESS_TOKEN_SECRET}`, {expiresIn: '15m'})
             // gli invio il nuovo accessToken creato
             res.status(200).json({ accessToken: accessToken})
 
