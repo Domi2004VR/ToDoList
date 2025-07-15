@@ -16,7 +16,6 @@ function ToDoListCard({ listToOpen, setListToOpen ,userId,setTodolists, todolist
 
     const navigate = useNavigate();
 
-    console.log(userId + " " + todolistId);
 
 
     //Serve per rimuovere la todolist dalle listcard visive

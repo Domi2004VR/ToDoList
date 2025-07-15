@@ -1,8 +1,8 @@
 import Form from "react-bootstrap/Form";
 import "bootstrap-icons/font/bootstrap-icons.css"
 import {useEffect, useState} from "react";
-import {io} from "socket.io-client";
 import {deleteTask, handleTask, updateTask} from "../services/api";
+import socket from "../services/socket";
 
 
 function ToDo ({onRemove, description, isDisabled, setIsDisabled, toDoes, setToDoes, todo, id, done, setDone}) {
@@ -12,6 +12,7 @@ function ToDo ({onRemove, description, isDisabled, setIsDisabled, toDoes, setToD
     const [editedDescription, setEditedDescription] = useState(description);
     //Stato per mantenere la vecchia descrizione in caso di annullamento modifiche
     const [originalDescription, setOriginalDescription] = useState(description);
+
 
 
     //Imposta editedDescription a ogni variazione dell'input text
@@ -48,16 +49,16 @@ function ToDo ({onRemove, description, isDisabled, setIsDisabled, toDoes, setToD
     }
 
 
-    function handleDone (e) {
+    function handleDone () {
         //Inverto la condizione in maniera che lo stato anche se non aggiornato non influisce sul backend
         //Sono costretto a fare così perchè lo stato non si aggiorna in tempo reale ma al prossimo rendering
         const newDone = !todo.isDone;
-
-        socket.emit('CompletedTask' , {description : editedDescription})
+        //Emetto l'evento Completed task quando qualcuno spunta un To DO , passo come dati se è completato o ripristinato e la sua descrizione
+        socket.emit('CompletedTask' , { id:todo._id , isDone:newDone, description : editedDescription})
         //Aggiorno il backend
         handleTask(todo._id, newDone);
         //Aggiorno il frontend impostando lo stato del task su Done solo per il task con l'id ricevuto
-        setToDoes(toDoes.map((element)=>{
+        setToDoes(prevToDoes=> prevToDoes.map((element)=>{
             if(todo._id === element._id){
                 return {...element, isDone: newDone};
             }
@@ -75,20 +76,37 @@ function ToDo ({onRemove, description, isDisabled, setIsDisabled, toDoes, setToD
     }
 
 
-    const socket = io('http://localhost:3002');
 
     useEffect(() => {
+        //Aggiungo un evenetLitener per TaskNotify che ricevo dal server
         socket.on('TaskNotify' , (data)=>  {
-            alert('Task completata con successo!'+ data.description);
+            setToDoes(prevtoDoes => prevtoDoes.map((element)=>{  //prevtoDoes è lo stato toDoes nella sua versione più aggiornata possibile a differenza
+                // di todoes che è la versione aggiornata alla creaione di useEffect (closure datata)
+                if(data.id === element._id){
+                    return {...element, isDone: data.isDone};
+                }
+                return element;
+            }))
+            //Eseguo questo codice quando ricevo TaskNotify dal server
+            if(data.isDone === true) {
+                //Emetto un alert positiva se la task è completata
+                alert(`Task ${data.description} completata con successo!`)
+            }else{
+                //emetto un alert con task ripristinata se la task viene resettata a non fatta
+                alert(`Task ${data.description} ripristinata con successo!`)
+            }
+
         });
+        //Rimuovo l'eventListener dopo aver ricevuto una volta l'evento , se lo lasciassi ogni volta che useEffect viene triggerato aggiungerebbe un altro listener
         return ()=> socket.off('TaskNotify');
-    },[todo.isDone]);
+    },[])  //Monta una volta il listener quando la pagina viene caricata
 
 
 
 
 
     return (
+
         <div className="ToDoContainer">
             <div className="checkBoxToDoContainer">
                 <Form.Check  id="checkBoxToDo" checked={todo.isDone} onChange={handleDone} aria-label="option 1" />

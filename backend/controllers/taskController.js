@@ -24,8 +24,6 @@ exports.getToDoList = (req, res) => {
 
 exports.createTask = (req, res) => {
     const {description, todolistId} = req.body;
-    console.log("ti sto mandando l'id di todolist: " + todolistId);
-    console.log("ti sto mandando description: " + description);
 
     if(!todolistId){
         return res.status(400).json({message: "è richiesto l'id della todolist per poter inserire un nuovo task"})
@@ -49,7 +47,6 @@ exports.createTask = (req, res) => {
             }, {new: true}).populate('tasks')
 
                 .then((ToDoListUpdated) =>{
-                    console.log(ToDoListUpdated.tasks)
                     res.status(200).json({
                         message: "task creato con successo",
                         tasks: ToDoListUpdated.tasks,
@@ -87,7 +84,6 @@ exports.deleteTask = (req, res) => {
 
 exports.updateTask = (req, res) => {
     const {taskId, description} = req.body
-    console.log("ti sto mandando la description: " + description);
 
     if(!taskId){
         return res.status(400).json({message: "è richiesto l'id della task per procedere con la modifica"})
@@ -120,9 +116,6 @@ exports.updateTask = (req, res) => {
 
 exports.isDoneTask = (req, res) => {
    const  {taskId, isDone } = req.body
-    console.log("ti sto mandando l'id della task: " + taskId);
-    console.log("ti sto mandando il valore della task: " + isDone);
-    console.log("valuto la condizione " + (isDone === null))
     if(!taskId){
         return res.status(400).json({message: "Per cambiare lo stato di una task è necessario inserire l'id della task"})
     }

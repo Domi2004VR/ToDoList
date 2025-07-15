@@ -16,7 +16,6 @@ import {deleteTodo, openList} from "../services/api";
 
         authFetch(`http://localhost:3001/todolist/user/${user.id}`)
             .then(data => {
-                console.log(data.todoLists);
                 //cambio la data fornita dal db con il formato italiano da inserire nelle schede
                 const formatted = data.todoLists.map(todo => ({
                     ...todo,

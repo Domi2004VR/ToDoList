@@ -24,7 +24,6 @@ function ToDoList({ user ,listToOpen, setListToOpen, openPopup, closePopup}) {
         .then((toDoListInfo) =>{
             setListToOpen(toDoListInfo)
             setToDoes(toDoListInfo.tasks)
-            console.log(toDoListInfo.tasks)
         })
     }, []); //questo useEffect serve per caricare la lista quando si entra nella pagina, non viene più ricaricato
 

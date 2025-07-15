@@ -11,19 +11,15 @@ const toDoListRouter = require ('./routes/toDoListRouter')
 const taskRouter = require ('./routes/taskRouter')
 
 
-const server = http.createServer(app);
+const server = http.createServer(app)
 const io = new Server(server , {cors:{origin: '*'} }) ; //permetti a react di connettersi
 
 
-//Scrivo appena un utente di connette
-io.on('connection', (socket) => {
-    console.log('Utente connesso');
-
-
-    socket.on('CompletedTask', (data)=>{
-         console.log("Task completata:  " , data);
-
-        socket.broadcast.emit('TaskNotify', data)  //BroadCast permette di inviare l'evento a tutti i connessi tranne a chi lo ha generato
+//io ascolta l'evento connection che viene emesso a ogni nuova connesssione
+io.on('connection', (socket) => { //socket è la connessione con il singolo client collegato
+    socket.on('CompletedTask', (data)=>{ //Ascolta evento CompletedTask che viene mandato dal client , data sono le info passate dal client
+        //Scrivo qui cosa deve fare quando riceve l'evento CompletedTask
+        socket.broadcast.emit('TaskNotify', data)  //BroadCast permette di inviare l'evento(TaskNotify) a tutti i connessi tranne a chi lo ha generato
     });
 })
 
