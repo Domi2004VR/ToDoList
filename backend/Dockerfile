@@ -1,20 +1,20 @@
-# Usa come base un'immagine ufficiale di Node.js
-FROM node:20
+# Usa Node.js LTS
+FROM node:18
 
-# Imposta la cartella di lavoro dentro il container
+# Imposta la working directory nel container
 WORKDIR /app
 
-# Copia i file necessari per installare le dipendenze
+# Copia solo i file del backend (Render parte da /backend già)
 COPY package*.json ./
 
-# Installa le dipendenze (npm install)
+# Installa le dipendenze
 RUN npm install
 
-# Copia tutto il contenuto (della tua cartella backend) nel container
+# Copia il resto dei file del backend nel container
 COPY . .
 
-# Espone la porta su cui gira il server (es. 3001)
+# Espone la porta (Render userà process.env.PORT)
 EXPOSE 3001
 
-# Comando per avviare il server
-CMD ["npm", "start"]
+# Comando di avvio
+CMD ["node", "server.js"]
