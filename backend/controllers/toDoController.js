@@ -68,7 +68,6 @@ exports.deleteToDoList = (req, res) => {
     ToDoList.findOne({_id:todolistId, creator: userId})
         .then(todoListFindByCreatorId => {
             if(!todoListFindByCreatorId){
-                console.log("l'utente non è il creatore della lista")
                 //se l'utente non è il creatore, controllo se appartiene ai membri
                 return ToDoList.findOne({_id:todolistId, members: userId})
                     .then(userFind => {

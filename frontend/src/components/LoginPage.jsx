@@ -25,7 +25,7 @@ function LoginPage({user, setUser}) {
     function handleSubmit(e) {
         e.preventDefault();
 
-        fetch('http://localhost:3001/auth/login', {
+        fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json' //serve per dire al server che gli sto inviando dei dati in formato json
@@ -90,7 +90,7 @@ function LoginPage({user, setUser}) {
                     <Button type="submit" variant="outline-primary" className="button">Login</Button>
                     </form>
 
-                    <p>Non sei ancora registrato? <a href="http://localhost:3000/register">Registrati!</a> </p>
+                    <p>Non sei ancora registrato? <a href={`${process.env.REACT_APP_API_URL}/register`}>Registrati!</a> </p>
                     <ErrorMessage message={error} />
 
                 </div>

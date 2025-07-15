@@ -20,7 +20,7 @@ function authFetch(url, options = {}) {
         .then(res => {
             if (res.status === 401) {
                 // Access token scaduto quindi tenta il refresh del token
-                return fetch("http://localhost:3001/auth/refresh", {
+                return fetch(`${process.env.REACT_APP_API_URL}/auth/refresh`, {
                     method: "POST",
                     credentials: "include", // se usi cookie httpOnly
                 })

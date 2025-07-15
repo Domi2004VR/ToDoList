@@ -12,7 +12,6 @@ services:
     build: ./backend
     ports:
       - "3001:3001"
-      - "3002:3002"  # WebSocket
     environment:
       - MONGO_URL=mongodb://mongo:27017/ToDoList
     depends_on:

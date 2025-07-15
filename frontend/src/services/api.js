@@ -8,7 +8,7 @@ import authFetch from '../authFetch';
 // To do e restituisce la to do creata se va a buon fine altrimenti un errore
 
 export function createTodo(title, userId ) {
-    return authFetch('http://localhost:3001/todolist/create', {
+    return authFetch(`${process.env.REACT_APP_API_URL}/todolist/create`, {
         method: 'POST',
         body: JSON.stringify({
             title: title,
@@ -25,7 +25,7 @@ export function createTodo(title, userId ) {
 }
 
 export function deleteTodo(userId, todolistId) {
-    return authFetch('http://localhost:3001/todolist/delete', {
+    return authFetch(`${process.env.REACT_APP_API_URL}/todolist/delete`, {
         method: 'DELETE',
         body: JSON.stringify({
             userId: userId,
@@ -38,7 +38,7 @@ export function deleteTodo(userId, todolistId) {
 }
 
 export function openList(listId) {
-    return authFetch(`http://localhost:3001/todolist/open/${listId}`, {
+    return authFetch(`${process.env.REACT_APP_API_URL}/todolist/open/${listId}`, {
         method: 'GET',
 
     })
@@ -48,7 +48,7 @@ export function openList(listId) {
 }
 
 export function getTodo(listId) {
-    return authFetch(`http://localhost:3001/todolist/mytodo/${listId}`, {
+    return authFetch(`${process.env.REACT_APP_API_URL}/todolist/mytodo/${listId}`, {
         method: 'GET'
     })
         .then(data => {
@@ -59,7 +59,7 @@ export function getTodo(listId) {
 
 //funzione che fa la fetch per joinare una To-do e restituisce la todolist trovata se va a buon fine altrimenti un errore
 export function joinTodo(code, userId) {
-    return authFetch(`http://localhost:3001/todolist/join`, {
+    return authFetch(`${process.env.REACT_APP_API_URL}/todolist/join`, {
         method: 'PUT',     //Uso una PUT e non una get perchè devo aggiungere anche l'id utente ai membri e non solo recuperare la lista
         body: JSON.stringify({
             userId:userId,
@@ -77,7 +77,7 @@ export function joinTodo(code, userId) {
 
 //funzione che fa la fetch per fare il logout
 export function logout() {
-    return authFetch('http://localhost:3001/auth/logout', {
+    return authFetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
         method: "POST",
     })
         .then((data) => {
@@ -88,7 +88,7 @@ export function logout() {
 }
 
 export function createTasks (description, listId) {
-    return authFetch('http://localhost:3001/task/create', {
+    return authFetch(`${process.env.REACT_APP_API_URL}/task/create`, {
         method: 'PUT',
         body: JSON.stringify({
             description: description,
@@ -102,7 +102,7 @@ export function createTasks (description, listId) {
 
 
 export function deleteTask (taskId) {
-    return authFetch(`http://localhost:3001/task/delete`, {
+    return authFetch(`${process.env.REACT_APP_API_URL}/task/delete`, {
         method: 'DELETE',
         body: JSON.stringify({
             taskId: taskId
@@ -114,7 +114,7 @@ export function deleteTask (taskId) {
 }
 
 export function updateTask (taskId, description) {
-    return authFetch(`http://localhost:3001/task/update`, {
+    return authFetch(`${process.env.REACT_APP_API_URL}/task/update`, {
         method: 'PUT',
         body: JSON.stringify({
             taskId: taskId,
@@ -128,7 +128,7 @@ export function updateTask (taskId, description) {
 }
 
 export function handleTask(taskId, status) {
-    return authFetch(`http://localhost:3001/task/handle`, {
+    return authFetch(`${process.env.REACT_APP_API_URL}/task/handle`, {
         method: 'PUT',
         body: JSON.stringify({
             taskId: taskId,

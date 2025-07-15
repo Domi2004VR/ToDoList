@@ -25,7 +25,7 @@ function RegisterPage({user, setUser}) {
     async function handleSubmit(e) {
       e.preventDefault();  //Evito il comportamento predefinito del form
 
-      fetch('http://localhost:3001/auth/register', {
+      fetch(`${process.env.REACT_APP_API_URL}/auth/register`, {
           method : 'POST' ,
           headers: {
               'Content-Type': 'application/json'  //Serve ad avvisare il server che i dati che gli sto per mandare sono in formato JSON

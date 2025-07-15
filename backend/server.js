@@ -11,8 +11,8 @@ const toDoListRouter = require ('./routes/toDoListRouter')
 const taskRouter = require ('./routes/taskRouter')
 
 
-const server = http.createServer(app)
-const io = new Server(server , {cors:{origin: '*'} }) ; //permetti a react di connettersi
+const server = http.createServer(app) //serve necessariamente per collegare un websocket
+const io = new Server(server , {cors:{origin: process.env.FRONTEND_URL} }) ; //permette a react di connettersi al websocket
 
 
 //io ascolta l'evento connection che viene emesso a ogni nuova connesssione
@@ -23,17 +23,11 @@ io.on('connection', (socket) => { //socket è la connessione con il singolo clie
     });
 })
 
-server.listen(3002 ,()=>{ //Metto il server Websocket in ascolto sulla porta 3002
-    console.log('Server WebSocket in ascolto sulla porta: 3002');
-})
-
-
-
 
 app.use(express.json()); //converte tutte le stringhe json in oggetti js
 app.use(cookieParser()) //serve a rendere leggibili i cookie inviati dal client
 app.use(cors({
-    origin: 'http://localhost:3000', //accetta richieste solo dall'url del mio frontend (per sicurezza)
+    origin: process.env.FRONTEND_URL, //accetta richieste solo dall'url del mio frontend (per sicurezza)
     credentials: true, //permette anche di inviare cookie da quell'url senza che vengano bloccati
 }))
 
@@ -48,7 +42,7 @@ const db = mongoose.connection
 
 db.once('open', () => {
     console.log('Connesso al database');
-    app.listen(process.env.PORT, () => {
-        console.log('Server in ascolto sulla porta: ' + process.env.PORT);
+    server.listen(process.env.PORT, () => {
+        console.log('Server e websocket in ascolto sulla porta: ' + process.env.PORT); // Metto il server e il Websocket in ascolto sulla porta 3000 (backend)
     })
 })

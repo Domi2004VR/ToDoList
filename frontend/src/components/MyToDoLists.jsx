@@ -14,7 +14,7 @@ import {deleteTodo, openList} from "../services/api";
         //se si entra nell'errore significa che c'è un'errore di passaggio riguardante il parametro dell'id dello user
         if (!user.id) return;
 
-        authFetch(`http://localhost:3001/todolist/user/${user.id}`)
+        authFetch(`${process.env.REACT_APP_API_URL}/todolist/user/${user.id}`)
             .then(data => {
                 //cambio la data fornita dal db con il formato italiano da inserire nelle schede
                 const formatted = data.todoLists.map(todo => ({
