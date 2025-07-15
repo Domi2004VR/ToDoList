@@ -89,14 +89,12 @@ exports.loginUser = (req, res) => {
                 RefreshToken.create({token: refreshToken, userId: userFind._id})  // registro il refreshToken nel db
 
                 .then(() => {
-                    console.log("Ho creato il refresh token :" , refreshToken);
                     res.cookie('jwt', refreshToken, { //poi lo invio tramite cookie il refreshToken
                         httpOnly: true,  //solo tramite http
                         sameSite: 'strict', // solo per richieste all'interno del sito (aiuta a prevenire CSRF)
                         secure: process.env.NODE_ENV === 'production', // Solo su HTTPS in produzione
                         maxAge: 1000*60*60*24*7 // 7 giorni in millisecondi
                     })
-                    console.log("Ho creato il cookie e te l'ho mandato in res") ;
 
                     res.json({ //ed invio tramite body della risposta l'accessToken, che verrà poi conservato nel localStorage
                         message: 'Login effettuato con successo',
@@ -136,8 +134,6 @@ const cookies = req.cookies
             })
 
             res.status(200).json({ message: 'Logout effettuato con successo' })
-
-
         })
         .catch(err => {
             return res.status(500).json({ message: 'Errore del server durante il logout' })
@@ -148,7 +144,6 @@ const cookies = req.cookies
 exports.refreshToken = (req, res) => {
     //equivale a scrivere if(!cookies || !cookies.jwt) , cioè se cookies o cookies.jwt non esistono
     const cookies = req.cookies
-    console.log('ti sto per mandare i cookie' + JSON.stringify(cookies));
     if (!cookies?.jwt) {
         return res.status(401).json({ message: 'Refresh token non trovato' })
     }

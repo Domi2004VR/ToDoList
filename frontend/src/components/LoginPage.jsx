@@ -46,15 +46,18 @@ function LoginPage({user, setUser}) {
             })
             .then(data => {
                 setError(null); // login ok, nessun errore
-                console.log("Login riuscito:", data);
                 const currentUser = {
                     id: data.id,
                     nome: data.nome,
                     cognome: data.cognome,
                     email: data.email
                 }
+                //Mi salvo l'oggetto user con tutte le informazioni dell'utente nel local storage per usarlo quando la pagina viene aggiornata e si perde lo stato
+                //in particolare l'item user viene recuperato tramite useEffect in App.jsx a ogni refresh
                 localStorage.setItem("user", JSON.stringify(currentUser));
+                //Salvo lo user anche nello stato ma a refresh pagina si perde
                 setUser(currentUser);
+                //salvo il jwt nel localstorage per recuperarlo durante i middlware di AccessTokenVerify
                 localStorage.setItem("jwt", data.accessToken);
                 navigate("/Home");
             })

@@ -18,32 +18,26 @@ function ToDoListCard({ listToOpen, setListToOpen ,userId,setTodolists, todolist
 
     console.log(userId + " " + todolistId);
 
+
+    //Serve per rimuovere la todolist dalle listcard visive
     function handleRemoveToDoList () {
-
+        //Aggiorna il backend
         deleteTodo(userId, todolistId )
-
-        const toDoListsFiltered= todolists.filter(element => { return todolistId !== element.id
-
+        //Filtro array liste eliminando quella con id ugale a quella del bottone
+        const toDoListsFiltered= todolists.filter(element => { return todolistId !== element._id
         })
-
+        //Aggiorno lo stato
         setTodolists(toDoListsFiltered)
-
     }
 
     function handleOpen(){
 
         openList(todolistId)
-
             .then(toDoListToOpen => {
-
                 setListToOpen(toDoListToOpen)
-
                 navigate(`${todolistId}`)
-
             })
-
     }
-
     return(
 
         <div className="cardContainer">

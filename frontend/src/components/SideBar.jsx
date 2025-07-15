@@ -6,19 +6,7 @@ import {useNavigate} from "react-router-dom";
 
 function SideBar({nome, openPopup ,closePopup }){
     const navigate = useNavigate();
-    const [error,setError] = useState(null);
-    function handleLogout(){
-        console.log("Logout effettuato");
-        logout()
-            .then(res=>{
-                navigate("/login");
-                console.log("Logout effettuato");
-            })
-            .catch(err=>{
-                setError(err.message);
-                console.log("fetch non riuscita: ", err.message);
-            })
-    }
+
 
 
     return(

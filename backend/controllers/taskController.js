@@ -115,5 +115,29 @@ exports.updateTask = (req, res) => {
             console.log(err)
             return res.status(500).json({message: "Errore del server durante la modifica del task"})
         })
+}
 
+
+exports.isDoneTask = (req, res) => {
+   const  {taskId, isDone } = req.body
+    console.log("ti sto mandando l'id della task: " + taskId);
+    console.log("ti sto mandando il valore della task: " + isDone);
+    console.log("valuto la condizione " + (isDone === null))
+    if(!taskId){
+        return res.status(400).json({message: "Per cambiare lo stato di una task è necessario inserire l'id della task"})
+    }
+    if(isDone === null){
+        return res.status(400).json({message: "Per cambiare lo stato di una task hai bisogno del suo stato attuale"})
+    }
+
+    Task.updateOne({_id:taskId}, {
+        $set: {isDone: isDone},
+    })
+        .then((taskStatus)=>{
+            if(!taskStatus){
+                return res.status(400).json({message: "errore durante la modifica del task"})
+            }
+            return res.status(200).json({message: "task modificato con successo" , taskStatus: taskStatus})
+            }
+        )
 }

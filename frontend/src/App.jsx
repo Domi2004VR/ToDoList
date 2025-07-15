@@ -7,7 +7,8 @@ import {useEffect, useState} from "react";
 import Home from "./components/Home";
 import MyToDoLists from "./components/MyToDoLists";
 import ToDoList from "./components/ToDoList";
-import {createTodo, joinTodo} from "./services/api";
+import {createTodo, joinTodo, logout} from "./services/api";
+
 import toDoList from "./components/ToDoList";
 
 
@@ -38,11 +39,11 @@ function App() {
     const[listToOpen, setListToOpen] = useState({});
 
 
-    //funzione che recupera l'utente dal localstorage e lo setta nello stato user (solo una volta, quando si avvia l'app)
+    //funzione che recupera l'utente dal localstorage e lo setta nello stato user (solo una volta, quando si avvia l'app o si aggiorna la pagina)
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
-            setUser(JSON.parse(storedUser));
+            setUser(JSON.parse(storedUser)); //parse serve a convertire da JSON a OGGETTO JS
         }
     }, [])
 
@@ -52,11 +53,14 @@ function App() {
             setPopup({data:popupCreate, visible: true});
         } else if (type === "join") {
             setPopup({data:popupJoin, visible: true})
+        } else if (type === "logout") {
+            setPopup({data:popupLogout , visible: true})
         }
     }
 
     const closePopup = () => {
         setPopup({visible: false, type: null, data: null}); //funzione che chiude il popup da passare a componenti figli
+        setInputValue(" ");
     }
 
     function formatDate(date){
@@ -101,6 +105,19 @@ function App() {
             })
     }
 
+    function handleLogout(){
+        logout()
+            .then(res=>{
+                window.location.href = ("http://localhost:3000/login");
+                localStorage.removeItem("user");
+                localStorage.removeItem("jwt");
+            })
+            .catch(err=>{
+                setError(err.message);
+                console.log("C'è stato un errore durante il logout", err.message);
+            })
+    }
+
     const popupJoin = {   //proprietà da passare al popup window per la finestra di unione a una To-Do
         title: "Unisciti a To Do",
         message: "Inserisci il codice d'invito",
@@ -125,6 +142,18 @@ function App() {
         handleConfirm: handleCreateTodo,
         handleClose: closePopup,
     }
+    const popupLogout={
+        title: "Sei sicuro di voler effettuare il logout?",
+            message: "Effettuando il logout verrai disconnesso immediatamente ",
+            inputText:{
+            enable: false,
+                placeholder: "",
+                value: ""
+        },
+        errorMessage: error,
+            handleConfirm: handleLogout,
+            handleClose: closePopup
+    }
 
 
     return (
@@ -133,7 +162,7 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<LoginPage user={user} setUser={setUser} />} />
                 <Route path="/register" element={<RegisterPage user={user} setUser={setUser} />} />
-                <Route path="/home" element={<Home todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup} closePopup={closePopup} />} />
+                <Route path="/home" element={<Home todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup} closePopup={closePopup} />}/>
                 <Route path="/mytodolists" element={<MyToDoLists listToOpen={listToOpen} setListToOpen={setListToOpen} todolist={todolist} todolists={todolists} setTodolists={setTodolists} user={user} openPopup={openPopup}  closePopup={closePopup} />} />
                 <Route path="/mytodolists/:listId" element={<ToDoList user={user} listToOpen={listToOpen} setListToOpen={setListToOpen} openPopup={openPopup}  closePopup={closePopup} />} />
             </Routes>

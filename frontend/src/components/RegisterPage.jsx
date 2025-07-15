@@ -50,13 +50,19 @@ function RegisterPage({user, setUser}) {
           })
           .then((data)=>{  //Se tutto è andato a buon fine prendo il valore di res.json e lo memorizzo in data per poi elaborarlo
               setError(null);           //non ho errori
-              console.log("Registrazione avvenuta con successo", data);
+
+              //salvo il l'access token (jwt) nel localstorage per recuperarlo durante i middlware di AccessTokenVerify
               localStorage.setItem("jwt", data.accessToken);
-              setUser({
+              const currentUser = {
                   id: data.id,
                   nome:data.nome,
                   cognome:data.cognome,
-                  email: data.email});
+                  email: data.email};
+              //Mi salvo l'oggetto user con tutte le informazioni dell'utente nel local storage per usarlo quando la pagina viene aggiornata e si perde lo stato
+              //in particolare l'item user viene recuperato tramite useEffect in App.jsx a ogni refresh
+              localStorage.setItem("user", JSON.stringify(currentUser));
+              //Mi salvo l'oggetto user con tutte le informazioni dell'utente nello stato
+              setUser(currentUser);
               navigate("/Home");   //Reindirizzo su dashboard
           })
           .catch((err)=>{

@@ -1,6 +1,9 @@
 import authFetch from '../authFetch';
 
 
+
+
+
 //funzione che fa la fetch per creare una
 // To do e restituisce la to do creata se va a buon fine altrimenti un errore
 
@@ -74,15 +77,14 @@ export function joinTodo(code, userId) {
 
 //funzione che fa la fetch per fare il logout
 export function logout() {
-    return fetch('http://localhost:3001/auth/logout', {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json'
-        },
+    return authFetch('http://localhost:3001/auth/logout', {
+        method: "POST",
     })
-            .then(res => {
-                if (!res.ok) throw new Error("Errore nel logout");
-            })
+        .then((data) => {
+            return data
+            }
+        )
+
 }
 
 export function createTasks (description, listId) {
@@ -94,7 +96,6 @@ export function createTasks (description, listId) {
         })
     })
         .then(data => {
-
             return data.tasks;
         })
 }
@@ -122,6 +123,20 @@ export function updateTask (taskId, description) {
     })
     .then(data => {
         return data;
+    })
+
+}
+
+export function handleTask(taskId, status) {
+    return authFetch(`http://localhost:3001/task/handle`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            taskId: taskId,
+            isDone: status
+        })
+    })
+    .then(data => {
+        return data.message;
     })
 
 }
