@@ -90,7 +90,7 @@ function LoginPage({user, setUser}) {
                     <Button type="submit" variant="outline-primary" className="button">Login</Button>
                     </form>
 
-                    <p>Non sei ancora registrato? <a href={`${process.env.REACT_APP_API_URL}/register`}>Registrati!</a> </p>
+                    <p>Non sei ancora registrato? <a href={`${process.env.REACT_APP_FRONTEND_URL}/register`}>Registrati!</a> </p>
                     <ErrorMessage message={error} />
 
                 </div>
