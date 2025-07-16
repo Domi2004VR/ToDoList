@@ -1,16 +1,21 @@
-# Fase 1: Build
 FROM node:20 as build
+
 WORKDIR /app
+
+ARG REACT_APP_API_URL
+ARG REACT_APP_FRONTEND_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+ENV REACT_APP_FRONTEND_URL=$REACT_APP_FRONTEND_URL
+
 COPY package*.json ./
 RUN npm install
 COPY . .
+
 RUN npm run build
 
-# Fase 2: Nginx
+# Serve con Nginx
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
-
-# ✅ Aggiungi questa riga:
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

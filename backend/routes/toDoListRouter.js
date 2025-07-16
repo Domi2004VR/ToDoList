@@ -9,7 +9,7 @@ router.get('/user/:userId', authMiddleware.accessTokenVerify, toDoController.get
 router.post('/create' , authMiddleware.accessTokenVerify, toDoController.createToDoList);
 router.put('/join' , authMiddleware.accessTokenVerify ,  toDoController.joinToDoList);
 router.delete('/delete', authMiddleware.accessTokenVerify, toDoController.deleteToDoList);
-router.get('/open/:listId' , toDoController.openToDoList);
+router.get('/open/:listId' , authMiddleware.accessTokenVerify,toDoController.openToDoList);
 router.get('/mytodo/:todolistId', authMiddleware.accessTokenVerify, taskController.getToDoList)
 
 
