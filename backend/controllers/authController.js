@@ -45,7 +45,7 @@ exports.registerUser = (req, res) => {
                                     res.cookie('jwt', refreshToken, {
                                         httpOnly: true,  //solo tramite http
                                         sameSite: 'strict', // solo per richieste all'interno del sito (aiuta a prevenire CSRF)
-                                        secure: true, // Solo su HTTPS in produzione
+                                        secure: process.env.NODE_ENV === 'production', // Solo su HTTPS in produzione
                                         maxAge: 1000*60*60*24*7 // 7 giorni in millisecondi
                                     })
                                     res.json({              //risposta che mando al frontend contente info e accessToken
@@ -92,7 +92,7 @@ exports.loginUser = (req, res) => {
                     res.cookie('jwt', refreshToken, { //poi lo invio tramite cookie il refreshToken
                         httpOnly: true,  //solo tramite http
                         sameSite: 'strict', // solo per richieste all'interno del sito (aiuta a prevenire CSRF)
-                        secure: true, // Solo su HTTPS in produzione
+                        secure: process.env.NODE_ENV === 'production', // Solo su HTTPS in produzione
                         maxAge: 1000*60*60*24*7 // 7 giorni in millisecondi
                     })
 
@@ -130,7 +130,7 @@ const cookies = req.cookies
             res.clearCookie('jwt', {
                 httpOnly: true,
                 sameSite: 'strict',
-                secure: true,
+                secure: process.env.NODE_ENV === 'production'
             })
 
             res.status(200).json({ message: 'Logout effettuato con successo' })
