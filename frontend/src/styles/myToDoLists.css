@@ -1,0 +1,30 @@
+.sideBarContainer {
+    box-shadow: 3px 0 12px -3px rgba(44,100,144,0.08);
+    min-width: 20vw;
+    max-width: 300px;
+}
+
+.myToDoListsContainer {
+    display: flex;       /* Metti i figli in orizzontale */
+    flex-direction: row;
+    height: 100vh;       /* Opzionale, per coprire tutta la finestra */
+}
+.myToDoButtonsDiv{
+    display: flex;
+    max-width: 30%;
+    justify-content: space-around;
+    margin-left: 10px;
+}
+
+.RestantePagina {
+    overflow-y: auto;
+    background: linear-gradient(to bottom right, #f8fafc, #e0f2fe);;
+    flex-grow: 1;              /* Occupa tutto lo spazio rimanente */
+    padding: 32px;
+    min-width: 0;
+}
+
+.titleMyToDoListsPage{
+
+    font-family: 'Raleway', sans-serif
+}

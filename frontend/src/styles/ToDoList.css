@@ -1,0 +1,126 @@
+.toDoListContainerPage{
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+.sideBarContainerToDoPage {
+    box-shadow: 3px 0 12px -3px rgba(44,100,144,0.08);
+    min-width: 20vw;
+    max-width: 300px;
+}
+.restantePaginaToDoPage {
+    overflow-y: auto;
+    background: #f5f6f7;
+    flex-grow: 1;              /* Occupa tutto lo spazio rimanente */
+    padding: 32px;
+    min-width: 0;
+    height: 100%;
+}
+.titleToDoList{
+    font-family: 'Poppins', sans-serif;
+}
+.toDoListContainer{
+    background-color: #1f2937;
+    width: 100%;
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+
+}
+.inputToDoContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+
+}
+.inputToDoCreate{
+    width: 50%;
+
+}
+.buttonCreateToDo{
+    padding: 0 15px;
+    height: 100%;
+}
+.ToDoesContainer{
+    display: flex;
+    background-color: #1f2937;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: start;
+    border-radius: 10px;
+    flex-direction: column;
+    overflow-y:auto ;
+    scrollbar-width: none;
+}
+.ToDoContainer{
+    display: flex;
+    width: 100%;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border-top: 1px solid #e5e4ec;
+}
+.checkBoxToDoContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 20px;
+}
+.textToDo{
+    width: 50%;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    outline: none;
+}
+.toDoButtonsContainer{
+    margin: 0 20px;
+    opacity: 0;
+    visibility: hidden;
+}
+.ToDoContainer:hover .toDoButtonsContainer {
+    opacity: 1;
+    visibility: visible;
+}
+
+#checkBoxToDo{
+    cursor: pointer;
+    padding: 10px;
+}
+.iconsToDo{
+    color: white;
+    font-size: 1.6em;
+}
+.iconsToDo:hover{
+    cursor: pointer;
+    font-size: 1.7em
+}
+.iconsToDo.bi-trash:hover{
+    color: red
+}
+#removeToDo:hover{
+    color: red;
+    font-size: 1.7em
+}
+.iconsToDo.bi-check-circle:hover{
+    color: green
+}
+.iconsToDo.bi-pencil:hover{
+    color: darkorange;
+}
+
+
+
+
+

@@ -1,0 +1,61 @@
+.body{
+    font-family: 'Parastoo';
+    color: black;
+
+}
+.popupOverlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(2px);
+    background: rgba(0,0,0,0.3);
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999; /*Serve per assicurarsi che il popup sia sempre in cima*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.popupContainer{
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    flex-direction: column;
+    min-width: 25vw;
+    min-height: 25vh;
+    padding: 60px 20px;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.popupTitle{
+    font-weight: bold;
+    text-align: center;
+    min-width: 100%;
+}
+.popupDescription{
+    text-align: center;
+    min-width: 100%;
+}
+.popupButtonsContainer{
+    min-width: 80%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+
+}
+#closeButton, #confirmButton{
+    padding: 10px 20px;
+}
+
+.inputContainer{
+    min-width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 0;
+}

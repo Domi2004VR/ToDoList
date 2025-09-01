@@ -1,0 +1,41 @@
+.homeContainer{
+    display: flex;
+}
+.SideBarContainer {
+    box-shadow: 3px 0 12px -3px rgba(44,100,144,0.08);
+    min-width: 20vw;
+    max-width: 300px;
+}
+.restantePagina{
+    overflow-y: auto;
+    background: #f5f6f7;
+    flex-grow: 1;              /* Occupa tutto lo spazio rimanente */
+    padding: 32px;
+    min-width: 0;
+}
+#icon{
+    max-width: 20vh;
+}
+#welcomep{
+    text-align: left;
+    font-size: 1.5em;
+}
+#PStart{
+    text-align: left;
+    font-size: 1.5em;
+
+}
+
+#PStart span{
+    font-weight: bold;
+    font-size: 1.0em;
+}
+
+
+.HomeButtonsDiv{
+    display: flex;
+    max-width: 30%;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 40px;
+}

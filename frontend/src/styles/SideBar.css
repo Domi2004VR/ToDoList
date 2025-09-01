@@ -1,0 +1,88 @@
+.sideBarContainer {
+    background-color: #1f2937;
+    border-right: 1px solid #e5e4ec;
+    box-shadow: 3px 0 12px -3px rgba(44,100,144,0.08);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: start;
+    min-width: 20vw;
+    min-height: 100vh;
+    color: #f9fafb;
+}
+.sectionDiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    margin-top: 50px;
+    min-width: 100%;
+}
+
+.sectionDiv p:hover{
+    cursor: pointer;
+    color: darkorange;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+#welcomeDiv p:hover{
+    cursor: default;
+    color: #f7f7f7;
+    text-decoration: none;
+    font-weight: normal;
+
+}
+
+
+i{
+    font-size: 1.5em;
+    display:inline;
+    padding-right: 20px;
+
+}
+.sideBarp {
+    font-family: 'Poppins', sans-serif;
+    display: inline;
+    font-weight:normal;
+    font-size: 1.2em;
+}
+#logoutDiv{
+
+    align-items: end;
+    flex-grow: 3;
+    min-height: 100%;
+
+}
+#logoutRow{
+    min-width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+#logoutRow p:hover{
+    cursor: pointer;
+    color:red;
+}
+#welcomeDiv{
+    align-items: start;
+    flex-grow: 1.2;
+}
+#welcomeDiv p{
+    font-size: 1.7em;
+}
+.sectionDiv p,i{
+    color: #f7f7f7;
+}
+.sideBarIcon:hover{
+    color: black;
+    font-size: 1.7em;
+}
+#logoutButton:hover{
+    cursor: pointer;
+    color: #ef4444;
+    font-size: 1.9em;
+}
+
